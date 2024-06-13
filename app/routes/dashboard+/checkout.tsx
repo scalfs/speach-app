@@ -47,10 +47,10 @@ export default function DashboardCheckout() {
         <div className="flex w-full flex-col rounded-lg border border-border bg-card dark:bg-black">
           <div className="flex w-full flex-col rounded-lg p-6">
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-medium text-primary">
+              <h2 className="text-xl font-medium text-foreground">
                 Finalizando seu Checkout
               </h2>
-              <p className="text-sm font-normal text-primary/60">
+              <p className="text-sm font-normal text-foreground/60">
                 Estamos finalizando seu checkout. Por favor, aguarde...
               </p>
             </div>
@@ -63,17 +63,17 @@ export default function DashboardCheckout() {
               <div className="z-10 flex flex-col items-center gap-4">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-card hover:border-primary/40">
                   {isFreePlan && retries < 3 && (
-                    <Loader2 className="h-8 w-8 animate-spin stroke-[1.5px] text-primary/60" />
+                    <Loader2 className="h-8 w-8 animate-spin stroke-[1.5px] text-foreground/60" />
                   )}
                   {!isFreePlan && (
-                    <BadgeCheck className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+                    <BadgeCheck className="h-8 w-8 stroke-[1.5px] text-foreground/60" />
                   )}
                   {isFreePlan && retries === 3 && (
-                    <AlertTriangle className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+                    <AlertTriangle className="h-8 w-8 stroke-[1.5px] text-foreground/60" />
                   )}
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <p className="text-center text-base font-medium text-primary">
+                  <p className="text-center text-base font-medium text-foreground">
                     {isFreePlan && retries < 3 && 'Finalizando seu checkout ...'}
                     {!isFreePlan && 'Checkout concluído!'}
                     {isFreePlan &&

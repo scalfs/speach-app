@@ -27,11 +27,11 @@ export function ErrorBoundary() {
         404: () => (
           <div className="flex h-screen w-full flex-col items-center justify-center gap-8 rounded-md bg-card px-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-card hover:border-primary/40">
-              <HelpCircle className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+              <HelpCircle className="h-8 w-8 stroke-[1.5px] text-foreground/60" />
             </div>
             <div className="flex flex-col items-center gap-2">
-              <p className="text-2xl font-medium text-primary">Whoops!</p>
-              <p className="text-center text-lg font-normal text-primary/60">
+              <p className="text-2xl font-medium text-foreground">Whoops!</p>
+              <p className="text-center text-lg font-normal text-foreground/60">
                 {/* Nothing here yet! */}
                 Nada aqui ainda!
               </p>
@@ -40,11 +40,11 @@ export function ErrorBoundary() {
               to={DASHBOARD_PATH}
               prefetch="intent"
               className={`${buttonVariants({ variant: 'ghost', size: 'sm' })} gap-2`}>
-              <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
+              <span className="text-sm font-medium text-foreground/60 group-hover:text-foreground">
                 {/* Return to Home */}
                 Retornar para Home
               </span>
-              <ExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
+              <ExternalLink className="h-4 w-4 stroke-[1.5px] text-foreground/60 group-hover:text-foreground" />
             </Link>
           </div>
         ),

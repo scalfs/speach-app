@@ -1,5 +1,4 @@
-import IconBlack from '#app/assets/icon-black.png'
-import IconWhite from '#app/assets/icon-white.png'
+import IconColor from '#app/assets/icon-color.png'
 import { ThemeSwitcher } from '#app/components/misc/theme-switcher'
 import { Button, buttonVariants } from '#app/components/ui/button'
 import {
@@ -17,7 +16,6 @@ import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
 import { ROUTE_PATH as DASHBOARD_SETTINGS_PATH } from '#app/routes/dashboard+/settings'
 import { ROUTE_PATH as DASHBOARD_SETTINGS_BILLING_PATH } from '#app/routes/dashboard+/settings.billing'
 import { useRequestInfo } from '#app/utils/hooks/use-request-info'
-import { useTheme } from '#app/utils/hooks/use-theme.js'
 import { cn, getUserImgSrc, userHasRole } from '#app/utils/misc'
 import type { User } from '@prisma/client'
 import { Link, useLocation, useNavigate, useSubmit } from '@remix-run/react'
@@ -44,7 +42,6 @@ type NavigationProps = {
 }
 
 export function Navigation({ user, planId }: NavigationProps) {
-  const theme = useTheme()
   const navigate = useNavigate()
   const submit = useSubmit()
   const requestInfo = useRequestInfo()
@@ -63,13 +60,9 @@ export function Navigation({ user, planId }: NavigationProps) {
             to={DASHBOARD_PATH}
             prefetch="intent"
             className="flex h-10 items-center gap-1">
-            <img
-              src={theme === 'dark' ? IconWhite : IconBlack}
-              alt="logo"
-              className="h-10 w-auto"
-            />
+            <img src={IconColor} alt="logo" className="h-10 w-auto" />
           </Link>
-          <Slash className="h-6 w-6 -rotate-12 stroke-[1.5px] text-primary/10" />
+          <Slash className="ml-1 h-6 w-6 -rotate-12 stroke-[1.5px] text-primary/10" />
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button
@@ -86,22 +79,22 @@ export function Navigation({ user, planId }: NavigationProps) {
                     <span className="h-8 w-8 rounded-full bg-gradient-to-br from-orange-200 from-10% via-orange-500 to-emerald-400" />
                   )}
 
-                  <p className="text-sm font-medium text-primary/80">
+                  <p className="text-sm font-medium text-foreground/80">
                     {user?.username || ''}
                   </p>
-                  <span className="flex h-5 items-center rounded-full bg-primary/10 px-2 text-xs font-medium text-primary/80">
+                  <span className="flex h-5 items-center rounded-full bg-foreground/10 px-2 text-xs font-medium text-foreground/80">
                     {(planId && planId.charAt(0).toUpperCase() + planId.slice(1)) ||
                       'Gratuito'}
                   </span>
                 </div>
                 <span className="flex flex-col items-center justify-center">
-                  <ChevronUp className="relative top-[3px] h-[14px] w-[14px] stroke-[1.5px] text-primary/60" />
-                  <ChevronDown className="relative bottom-[3px] h-[14px] w-[14px] stroke-[1.5px] text-primary/60" />
+                  <ChevronUp className="relative top-[3px] h-[14px] w-[14px] stroke-[1.5px] text-foreground/60" />
+                  <ChevronDown className="relative bottom-[3px] h-[14px] w-[14px] stroke-[1.5px] text-foreground/60" />
                 </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent sideOffset={8} className="min-w-56 bg-card p-2">
-              <DropdownMenuLabel className="flex items-center text-xs font-normal text-primary/60">
+              <DropdownMenuLabel className="flex items-center text-xs font-normal text-foreground/60">
                 Conta Pessoal
               </DropdownMenuLabel>
               <DropdownMenuItem className="h-10 w-full cursor-pointer justify-between rounded-md bg-secondary px-2">
@@ -116,11 +109,11 @@ export function Navigation({ user, planId }: NavigationProps) {
                     <span className="h-6 w-6 rounded-full bg-gradient-to-br from-orange-200 from-10% via-orange-500 to-emerald-400" />
                   )}
 
-                  <p className="text-sm font-medium text-primary/80">
+                  <p className="text-sm font-medium text-foreground/80">
                     {user?.username || ''}
                   </p>
                 </div>
-                <Check className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60" />
+                <Check className="h-[18px] w-[18px] stroke-[1.5px] text-foreground/60" />
               </DropdownMenuItem>
 
               {planId && planId === PLANS.FREE && (
@@ -175,26 +168,26 @@ export function Navigation({ user, planId }: NavigationProps) {
               sideOffset={8}
               className="fixed -right-4 min-w-56 bg-card p-2">
               <DropdownMenuItem className="group flex-col items-start focus:bg-transparent">
-                <p className="text-sm font-medium text-primary/80 group-hover:text-primary group-focus:text-primary">
+                <p className="text-sm font-medium text-foreground/80 group-hover:text-foreground group-focus:text-foreground">
                   {user?.username || ''}
                 </p>
-                <p className="text-sm text-primary/60">{user?.email}</p>
+                <p className="text-sm text-foreground/60">{user?.email}</p>
               </DropdownMenuItem>
 
               <DropdownMenuItem
                 className="group h-9 w-full cursor-pointer justify-between rounded-md px-2"
                 onClick={() => navigate(DASHBOARD_SETTINGS_PATH)}>
-                <span className="text-sm text-primary/60 group-hover:text-primary group-focus:text-primary">
+                <span className="text-sm text-foreground/60 group-hover:text-foreground group-focus:text-foreground">
                   Configurações
                 </span>
-                <Settings className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60 group-hover:text-primary group-focus:text-primary" />
+                <Settings className="h-[18px] w-[18px] stroke-[1.5px] text-foreground/60 group-hover:text-foreground group-focus:text-foreground" />
               </DropdownMenuItem>
 
               <DropdownMenuItem
                 className={cn(
                   'group flex h-9 justify-between rounded-md px-2 hover:bg-transparent',
                 )}>
-                <span className="w-full text-sm text-primary/60 group-hover:text-primary group-focus:text-primary">
+                <span className="w-full text-sm text-foreground/60 group-hover:text-foreground group-focus:text-foreground">
                   Tema
                 </span>
                 <ThemeSwitcher userPreference={requestInfo.userPrefs.theme} />
@@ -215,10 +208,10 @@ export function Navigation({ user, planId }: NavigationProps) {
               <DropdownMenuItem
                 className="group h-9 w-full cursor-pointer justify-between rounded-md px-2"
                 onClick={() => submit({}, { action: LOGOUT_PATH, method: 'POST' })}>
-                <span className="text-sm text-primary/60 group-hover:text-primary group-focus:text-primary">
+                <span className="text-sm text-foreground/60 group-hover:text-foreground group-focus:text-foreground">
                   Sair
                 </span>
-                <LogOut className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60 group-hover:text-primary group-focus:text-primary" />
+                <LogOut className="h-[18px] w-[18px] stroke-[1.5px] text-foreground/60 group-hover:text-foreground group-focus:text-foreground" />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -233,7 +226,7 @@ export function Navigation({ user, planId }: NavigationProps) {
               to={ADMIN_PATH}
               prefetch="intent"
               className={cn(
-                `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-primary/80`,
+                `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-foreground/80`,
               )}>
               Admin
             </Link>
@@ -245,7 +238,7 @@ export function Navigation({ user, planId }: NavigationProps) {
             to={DASHBOARD_PATH}
             prefetch="intent"
             className={cn(
-              `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-primary/80`,
+              `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-foreground/80`,
             )}>
             Text to Speach
           </Link>
@@ -256,7 +249,7 @@ export function Navigation({ user, planId }: NavigationProps) {
             to={DASHBOARD_SETTINGS_PATH}
             prefetch="intent"
             className={cn(
-              `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-primary/80`,
+              `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-foreground/80`,
             )}>
             Configurações
           </Link>
@@ -267,7 +260,7 @@ export function Navigation({ user, planId }: NavigationProps) {
             to={DASHBOARD_SETTINGS_BILLING_PATH}
             prefetch="intent"
             className={cn(
-              `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-primary/80`,
+              `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-foreground/80`,
             )}>
             Assinatura
           </Link>

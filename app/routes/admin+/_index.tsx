@@ -10,8 +10,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function AdminIndex() {
   return (
     <div className="flex w-full flex-col gap-2 p-6 py-2">
-      <h2 className="text-xl font-medium text-primary">Começar</h2>
-      <p className="text-sm font-normal text-primary/60">
+      <h2 className="text-xl font-medium text-foreground">Começar</h2>
+      <p className="text-sm font-normal text-foreground/60">
         Explore o Painel Administrativo.
       </p>
     </div>

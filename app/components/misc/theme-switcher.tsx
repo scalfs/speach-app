@@ -59,7 +59,7 @@ export function ThemeSwitcher({
           <SelectItem
             key={theme}
             value={theme}
-            className={`text-sm font-medium text-primary/60 ${mode === theme && 'text-primary'}`}>
+            className={`text-sm font-medium text-foreground/60 ${mode === theme && 'text-foreground'}`}>
             {theme && theme.charAt(0).toUpperCase() + theme.slice(1)}
           </SelectItem>
         ))}
@@ -77,11 +77,11 @@ export function ThemeSwitcherHome() {
       {themes.map((theme) => (
         <button key={theme} type="submit" name="theme" value={theme}>
           {theme === 'light' ? (
-            <Sun className="h-4 w-4 text-primary/80 hover:text-primary" />
+            <Sun className="h-4 w-4 text-foreground/80 hover:text-foreground" />
           ) : theme === 'dark' ? (
-            <Moon className="h-4 w-4 text-primary/80 hover:text-primary" />
+            <Moon className="h-4 w-4 text-foreground/80 hover:text-foreground" />
           ) : (
-            <Monitor className="h-4 w-4 text-primary/80 hover:text-primary" />
+            <Monitor className="h-4 w-4 text-foreground/80 hover:text-foreground" />
           )}
         </button>
       ))}

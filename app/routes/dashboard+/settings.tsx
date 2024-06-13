@@ -45,7 +45,7 @@ export default function DashboardSettings() {
             )}>
             <span
               className={cn(
-                `text-sm text-primary/80 ${isSettingsPath && 'font-medium text-primary'}`,
+                `text-sm text-foreground/80 ${isSettingsPath && 'font-medium text-foreground'}`,
               )}>
               Geral
             </span>
@@ -58,7 +58,7 @@ export default function DashboardSettings() {
             )}>
             <span
               className={cn(
-                `text-sm text-primary/80 ${isBillingPath && 'font-medium text-primary'}`,
+                `text-sm text-foreground/80 ${isBillingPath && 'font-medium text-foreground'}`,
               )}>
               Assinatura
             </span>

@@ -83,8 +83,10 @@ export default function DashboardBilling() {
   return (
     <div className="flex h-full w-full flex-col gap-6">
       <div className="flex w-full flex-col gap-2 p-6 py-2">
-        <h2 className="text-xl font-medium text-primary">Este é um app versão teste.</h2>
-        <p className="text-sm font-normal text-primary/60">
+        <h2 className="text-xl font-medium text-foreground">
+          Este é um app versão teste.
+        </h2>
+        <p className="text-sm font-normal text-foreground/60">
           Estamos em um ambiente de testes Stripe. Você pode encontrar uma lista de
           cartões de teste na{' '}
           <a
@@ -101,8 +103,8 @@ export default function DashboardBilling() {
       {/* Plans */}
       <div className="flex w-full flex-col items-start rounded-lg border border-border bg-card">
         <div className="flex flex-col gap-2 p-6">
-          <h2 className="text-xl font-medium text-primary">Plano</h2>
-          <p className="flex items-start gap-1 text-sm font-normal text-primary/60">
+          <h2 className="text-xl font-medium text-foreground">Plano</h2>
+          <p className="flex items-start gap-1 text-sm font-normal text-foreground/60">
             Você atualmente possui o plano{' '}
             <span className="flex h-[18px] items-center rounded-md bg-primary/10 px-1.5 text-sm font-medium text-primary/80">
               {subscription
@@ -129,20 +131,20 @@ export default function DashboardBilling() {
                 }}>
                 <div className="flex w-full flex-col items-start p-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-base font-medium text-primary">
+                    <span className="text-base font-medium text-foreground">
                       {plan.name}
                     </span>
                     {plan.id !== PLANS.FREE && (
-                      <span className="flex items-center rounded-md bg-primary/10 px-1.5 text-sm font-medium text-primary/80">
+                      <span className="flex items-center rounded-md bg-primary/10 px-1.5 text-sm font-medium text-foreground/80">
                         {currency === CURRENCIES.USD ? '$' : 'R$'}{' '}
                         {selectedPlanInterval === INTERVALS.MONTH
                           ? plan.prices[INTERVALS.MONTH][currency] / 100
                           : plan.prices[INTERVALS.YEAR][currency] / 100}{' '}
-                        / {selectedPlanInterval === INTERVALS.MONTH ? 'month' : 'year'}
+                        / {selectedPlanInterval === INTERVALS.MONTH ? 'mês' : 'ano'}
                       </span>
                     )}
                   </div>
-                  <p className="text-start text-sm font-normal text-primary/60">
+                  <p className="text-start text-sm font-normal text-foreground/60">
                     {plan.description}
                   </p>
                 </div>
@@ -152,8 +154,8 @@ export default function DashboardBilling() {
                   <div className="flex items-center gap-2 px-4">
                     <label
                       htmlFor="interval-switch"
-                      className="text-start text-sm text-primary/60">
-                      {selectedPlanInterval === INTERVALS.MONTH ? 'Monthly' : 'Yearly'}
+                      className="text-start text-sm text-foreground/60">
+                      {selectedPlanInterval === INTERVALS.MONTH ? 'Mensal' : 'Anual'}
                     </label>
                     <Switch
                       id="interval-switch"
@@ -176,11 +178,11 @@ export default function DashboardBilling() {
             <div className="flex w-full items-center overflow-hidden rounded-md border border-primary/60">
               <div className="flex w-full flex-col items-start p-4">
                 <div className="flex items-end gap-2">
-                  <span className="text-base font-medium text-primary">
+                  <span className="text-base font-medium text-foreground">
                     {subscription.planId.charAt(0).toUpperCase() +
                       subscription.planId.slice(1)}
                   </span>
-                  <p className="flex items-start gap-1 text-sm font-normal text-primary/60">
+                  <p className="flex items-start gap-1 text-sm font-normal text-foreground/60">
                     {subscription.cancelAtPeriodEnd === true ? (
                       <span className="flex h-[18px] items-center text-sm font-medium text-red-500">
                         Expira
@@ -197,7 +199,7 @@ export default function DashboardBilling() {
                     .
                   </p>
                 </div>
-                <p className="text-start text-sm font-normal text-primary/60">
+                <p className="text-start text-sm font-normal text-foreground/60">
                   {PRICING_PLANS[PLANS.STARTER].description}
                 </p>
               </div>
@@ -206,10 +208,10 @@ export default function DashboardBilling() {
         )}
 
         <div className="flex min-h-14 w-full items-center justify-between rounded-lg rounded-t-none border-t border-border bg-secondary px-6 py-3 dark:bg-card">
-          {/* <p className="text-sm font-normal text-primary/60">
+          {/* <p className="text-sm font-normal text-foreground/60">
             You will not be charged for testing the subscription upgrade.
           </p> */}
-          <p className="text-sm font-normal text-primary/60">
+          <p className="text-sm font-normal text-foreground/60">
             Você não será cobrado ao testar o upgrade na assinatura.
           </p>
           {subscription?.planId === PLANS.FREE && (
@@ -232,20 +234,20 @@ export default function DashboardBilling() {
       {/* Manage Subscription */}
       <div className="flex w-full flex-col items-start rounded-lg border border-border bg-card">
         <div className="flex flex-col gap-2 p-6">
-          <h2 className="text-xl font-medium text-primary">Gerenciar Assinatura</h2>
-          <p className="flex items-start gap-1 text-sm font-normal text-primary/60">
+          <h2 className="text-xl font-medium text-foreground">Gerenciar Assinatura</h2>
+          <p className="flex items-start gap-1 text-sm font-normal text-foreground/60">
             Atualize seu meio de pagamento, endereço de cobrança, e mais.
           </p>
-          {/* <p className="flex items-start gap-1 text-sm font-normal text-primary/60">
+          {/* <p className="flex items-start gap-1 text-sm font-normal text-foreground/60">
             Update your payment method, billing address, and more.
           </p> */}
         </div>
 
         <div className="flex min-h-14 w-full items-center justify-between rounded-lg rounded-t-none border-t border-border bg-secondary px-6 py-3 dark:bg-card">
-          <p className="text-sm font-normal text-primary/60">
+          <p className="text-sm font-normal text-foreground/60">
             Você será redirecionado ao Portal de Clientes Stripe.
           </p>
-          {/* <p className="text-sm font-normal text-primary/60">
+          {/* <p className="text-sm font-normal text-foreground/60">
             You will be redirected to the Stripe Customer Portal.
           </p> */}
           <Form method="POST">

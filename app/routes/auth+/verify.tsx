@@ -83,8 +83,8 @@ export default function Verify() {
   return (
     <div className="mx-auto flex h-full w-full max-w-96 flex-col items-center justify-center gap-6">
       <div className="mb-2 flex flex-col gap-2">
-        <p className="text-center text-2xl text-primary">Verifique seu inbox!</p>
-        <p className="text-center text-base font-normal text-primary/60">
+        <p className="text-center text-2xl text-foreground">Verifique seu inbox!</p>
+        <p className="text-center text-base font-normal text-foreground/60">
           Nós acabamos de te enviar uma senha temporária.
           <br />
           Por favor, digite-a abaixo.
@@ -138,7 +138,7 @@ export default function Verify() {
         <AuthenticityTokenInput />
         <HoneypotInputs />
 
-        <p className="text-center text-sm font-normal text-primary/60">
+        <p className="text-center text-sm font-normal text-foreground/60">
           Não recebeu o código?
         </p>
         <Button type="submit" variant="ghost" className="w-full hover:bg-transparent">

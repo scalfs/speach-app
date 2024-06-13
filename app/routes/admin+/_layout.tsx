@@ -35,8 +35,8 @@ export default function Admin() {
           <div className="flex w-full flex-col rounded-lg border border-border bg-card dark:bg-black">
             <div className="flex w-full flex-col rounded-lg p-6">
               <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-medium text-primary">Usuários</h2>
-                <p className="text-sm font-normal text-primary/60">
+                <h2 className="text-xl font-medium text-foreground">Usuários</h2>
+                <p className="text-sm font-normal text-foreground/60">
                   Painel administrativo para gerenciar suas vozes, usuários e créditos
                   disponíveis.
                 </p>
@@ -49,13 +49,13 @@ export default function Admin() {
               <div className="relative flex w-full flex-col items-center justify-center gap-6 overflow-hidden rounded-lg border border-border bg-secondary px-6 py-24 dark:bg-card">
                 <div className="z-10 flex max-w-[460px] flex-col items-center gap-4">
                   <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-card hover:border-primary/40">
-                    <ShoppingBasket className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+                    <ShoppingBasket className="h-8 w-8 stroke-[1.5px] text-foreground/60" />
                   </div>
                   <div className="flex flex-col items-center gap-2">
-                    <p className="text-base font-medium text-primary">
+                    <p className="text-base font-medium text-foreground">
                       Gerencie seus usuários
                     </p>
-                    <p className="text-center text-base font-normal text-primary/60">
+                    <p className="text-center text-base font-normal text-foreground/60">
                       Gerencie as vozes, contas e créditos disponíveis.
                     </p>
                   </div>
@@ -68,10 +68,10 @@ export default function Admin() {
                     className={cn(
                       `${buttonVariants({ variant: 'ghost', size: 'sm' })} gap-2`,
                     )}>
-                    <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
+                    <span className="text-sm font-medium text-foreground/60 group-hover:text-foreground">
                       Explore Documentation
                     </span>
-                    <ExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
+                    <ExternalLink className="h-4 w-4 stroke-[1.5px] text-foreground/60 group-hover:text-foreground" />
                   </a>
                 </div> */}
 

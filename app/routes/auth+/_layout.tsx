@@ -1,5 +1,4 @@
-import IconBlack from '#app/assets/icon-black.png'
-import IconWhite from '#app/assets/icon-white.png'
+import IconColor from '#app/assets/icon-color.png'
 import { authenticator } from '#app/modules/auth/auth.server'
 import { ROUTE_PATH as HOME_PATH } from '#app/routes/_home+/_layout'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
@@ -8,8 +7,6 @@ import { getDomainPathname } from '#app/utils/misc.server'
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import { Link, Outlet } from '@remix-run/react'
-
-import { useTheme } from '#app/utils/hooks/use-theme.js'
 
 export const ROUTE_PATH = '/auth' as const
 
@@ -47,21 +44,16 @@ const QUOTES = [
 ]
 
 export default function Layout() {
-  const theme = useTheme()
   const randomQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)]
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="w-fullw b flex h-screen bg-black">
       <div className="absolute left-1/2 top-10 mx-auto flex -translate-x-1/2 transform lg:hidden">
         <Link
           to={HOME_PATH}
           prefetch="intent"
           className="z-10 flex h-10 flex-col items-center justify-center gap-2">
-          <img
-            src={theme === 'dark' ? IconWhite : IconBlack}
-            alt="logo"
-            className="h-10 w-auto"
-          />
+          <img src={IconColor} alt="logo" className="h-10 w-auto" />
         </Link>
       </div>
       <div className="relative hidden h-full w-[50%] flex-col justify-between overflow-hidden bg-card p-10 lg:flex">
@@ -69,16 +61,14 @@ export default function Layout() {
           to={HOME_PATH}
           prefetch="intent"
           className="z-10 flex h-10 w-10 items-center gap-1">
-          <img
-            src={theme === 'dark' ? IconWhite : IconBlack}
-            alt="logo"
-            className="h-10 w-auto"
-          />
+          <img src={IconColor} alt="logo" className="h-10 w-auto" />
         </Link>
 
         <div className="z-10 flex flex-col items-start gap-2">
-          <p className="text-base font-normal text-primary">{randomQuote.quote}</p>
-          <p className="text-base font-normal text-primary/60">- {randomQuote.author}</p>
+          <p className="text-base font-normal text-foreground">{randomQuote.quote}</p>
+          <p className="text-base font-normal text-foreground/60">
+            - {randomQuote.author}
+          </p>
         </div>
         <div className="base-grid absolute left-0 top-0 z-0 h-full w-full opacity-40" />
       </div>

@@ -85,8 +85,10 @@ export default function Login() {
   return (
     <div className="mx-auto flex h-full w-full max-w-96 flex-col items-center justify-center gap-6">
       <div className="mb-2 flex flex-col gap-2">
-        <h3 className="text-center text-2xl font-medium text-primary">Vamos começar</h3>
-        <p className="text-center text-base font-normal text-primary/60">
+        <h3 className="text-center text-2xl font-medium text-foreground">
+          Vamos começar
+        </h3>
+        <p className="text-center text-base font-normal text-foreground/60">
           Bem vindo! Por favor, faça o login para continuar.
         </p>
       </div>
@@ -135,7 +137,7 @@ export default function Login() {
 
       <div className="relative flex w-full items-center justify-center">
         <span className="absolute w-full border-b border-border" />
-        <span className="z-10 bg-card px-2 text-xs font-medium uppercase text-primary/60">
+        <span className="z-10 bg-card px-2 text-xs font-medium uppercase text-foreground/60">
           Ou continue com
         </span>
       </div>
@@ -144,7 +146,7 @@ export default function Login() {
         <Button variant="outline" className="w-full gap-2 bg-transparent">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-primary/80 group-hover:text-primary"
+            className="h-4 w-4 text-foreground/80 group-hover:text-foreground"
             viewBox="0 0 24 24">
             <path
               fill="currentColor"
@@ -156,7 +158,7 @@ export default function Login() {
         </Button>
       </Form>
 
-      <p className="px-6 text-center text-sm font-normal leading-normal text-primary/60">
+      <p className="px-6 text-center text-sm font-normal leading-normal text-foreground/60">
         Ao clicar em continuar, você concorda com nossos{' '}
         <a href="/" className="underline hover:text-primary">
           Termo de serviço

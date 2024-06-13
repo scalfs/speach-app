@@ -5,7 +5,7 @@ import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { siteConfig } from '#app/utils/constants/brand'
 import { useTheme } from '#app/utils/hooks/use-theme.js'
 import { cn } from '#app/utils/misc'
-import LogoBlack from '#app/assets/logo-black.png'
+import LogoColor from '#app/assets/logo-color.png'
 import LogoWhite from '#app/assets/logo-white.png'
 import ShadowPNG from '#public/images/shadow.png'
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
@@ -31,7 +31,7 @@ export default function Index() {
       <div className="sticky top-0 z-50 mx-auto flex w-full max-w-screen-lg items-center justify-between p-6 py-3">
         <Link to="/" prefetch="intent" className="flex h-10 items-center gap-1">
           <img
-            src={theme === 'dark' ? LogoWhite : LogoBlack}
+            src={theme === 'dark' ? LogoWhite : LogoColor}
             alt="logo"
             className="h-16 w-auto"
           />
@@ -101,7 +101,7 @@ export default function Index() {
           <Button
             variant="outline"
             className={cn(
-              'hidden h-8 rounded-full bg-white/40 px-3 text-sm font-bold backdrop-blur hover:text-primary dark:bg-secondary md:flex',
+              'hidden h-8 rounded-full bg-white/40 px-3 text-sm font-bold backdrop-blur hover:text-foreground dark:bg-secondary md:flex',
             )}>
             {/* <span className="flex items-center font-medium text-primary/60">
               Introduzindo

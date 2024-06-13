@@ -126,8 +126,8 @@ export default function DashboardSettings() {
         className="flex w-full flex-col items-start rounded-lg border border-border bg-card">
         <div className="flex w-full items-start justify-between rounded-lg p-6">
           <div className="flex flex-col gap-2">
-            <h2 className="text-xl font-medium text-primary">Seu Avatar</h2>
-            <p className="text-sm font-normal text-primary/60">
+            <h2 className="text-xl font-medium text-foreground">Seu Avatar</h2>
+            <p className="text-sm font-normal text-foreground/60">
               Este é o seu avatar. Ele será exibido em seu perfil.
             </p>
           </div>
@@ -169,7 +169,7 @@ export default function DashboardSettings() {
           />
         </div>
         <div className="flex min-h-14 w-full items-center justify-between rounded-lg rounded-t-none border-t border-border bg-secondary px-6 dark:bg-card">
-          <p className="text-sm font-normal text-primary/60">
+          <p className="text-sm font-normal text-foreground/60">
             Clique no avatar para adicionar uma imagem de seus arquivos.
           </p>
           {user.image?.id && !avatarFields.imageFile.errors && (
@@ -207,8 +207,8 @@ export default function DashboardSettings() {
         {...getFormProps(form)}>
         <div className="flex w-full flex-col gap-4 rounded-lg p-6">
           <div className="flex flex-col gap-2">
-            <h2 className="text-xl font-medium text-primary">Seu Username</h2>
-            <p className="text-sm font-normal text-primary/60">
+            <h2 className="text-xl font-medium text-foreground">Seu Username</h2>
+            <p className="text-sm font-normal text-foreground/60">
               Este é o seu username. Ele será exibido em seu perfil.
             </p>
           </div>
@@ -229,7 +229,7 @@ export default function DashboardSettings() {
           )}
         </div>
         <div className="flex min-h-14 w-full items-center justify-between rounded-lg rounded-t-none border-t border-border bg-secondary px-6 dark:bg-card">
-          <p className="text-sm font-normal text-primary/60">
+          <p className="text-sm font-normal text-foreground/60">
             Por favor, use 32 caracters no máximo.
           </p>
           <Button
@@ -245,14 +245,14 @@ export default function DashboardSettings() {
       {/* Delete Account */}
       <div className="flex w-full flex-col items-start rounded-lg border border-destructive bg-card">
         <div className="flex flex-col gap-2 p-6">
-          <h2 className="text-xl font-medium text-primary">Deletar Conta</h2>
-          <p className="text-sm font-normal text-primary/60">
+          <h2 className="text-xl font-medium text-foreground">Deletar Conta</h2>
+          <p className="text-sm font-normal text-foreground/60">
             Deletar permanentemente sua conta Speach Studio, todos os seus projetos,
             históricos e repectivos status.
           </p>
         </div>
         <div className="flex min-h-14 w-full items-center justify-between rounded-lg rounded-t-none border-t border-border bg-red-500/10 px-6 dark:bg-red-500/10">
-          <p className="text-sm font-normal text-primary/60">
+          <p className="text-sm font-normal text-foreground/60">
             Esta ação não pode ser desfeita, proceda com cautela.
           </p>
           <Form method="POST">
