@@ -6,6 +6,7 @@ import { prisma } from '#app/utils/db.server'
 import { ROUTE_PATH as ONBOARDING_USERNAME_PATH } from '#app/routes/onboarding+/username'
 import { Navigation } from '#app/components/navigation'
 import { Header } from '#app/components/header'
+import { AudioPlayer } from '#app/components/audio-player.js'
 
 export const ROUTE_PATH = '/dashboard' as const
 
@@ -27,6 +28,7 @@ export default function Dashboard() {
       <Navigation user={user} planId={subscription?.planId} />
       <Header />
       <Outlet />
+      <AudioPlayer />
     </div>
   )
 }

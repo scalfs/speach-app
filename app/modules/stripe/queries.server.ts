@@ -1,8 +1,8 @@
-import { PLANS } from '#app/modules/stripe/plans'
+import { FREE_QUOTA, PLANS } from '#app/modules/stripe/plans'
 import { stripe } from '#app/modules/stripe/stripe.server'
-import { prisma } from '#app/utils/db.server'
-import { getLocaleCurrency, HOST_URL } from '#app/utils/misc.server'
 import { ERRORS } from '#app/utils/constants/errors'
+import { prisma } from '#app/utils/db.server'
+import { HOST_URL, getLocaleCurrency } from '#app/utils/misc.server'
 
 /**
  * Creates a Stripe customer for a user.
@@ -63,6 +63,7 @@ export async function createFreeSubscription({
       planId: String(stripeSubscription.items.data[0].plan.product),
       priceId: String(stripeSubscription.items.data[0].price.id),
       interval: String(stripeSubscription.items.data[0].plan.interval),
+      availableCredits: plan?.charactersPerMonth ?? FREE_QUOTA,
       status: stripeSubscription.status,
       currentPeriodStart: stripeSubscription.current_period_start,
       currentPeriodEnd: stripeSubscription.current_period_end,

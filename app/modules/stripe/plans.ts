@@ -43,6 +43,9 @@ export type Currency = (typeof CURRENCIES)[keyof typeof CURRENCIES]
  * - Plan IDs correspond to the Stripe plan IDs for easy identification.
  * - 'name' and 'description' fields are used in Stripe Checkout and client UI.
  */
+
+export const FREE_QUOTA = 2000
+
 export const PRICING_PLANS = {
   [PLANS.FREE]: {
     id: PLANS.FREE,
@@ -50,6 +53,9 @@ export const PRICING_PLANS = {
     // description: 'Start with the basics, upgrade anytime.',
     description:
       'O básico para conhecer nosso sistema. Faça o upgrade a qualquer momento.',
+    usersCount: 1,
+    customVoices: 0,
+    charactersPerMonth: FREE_QUOTA,
     prices: {
       [INTERVALS.MONTH]: {
         [CURRENCIES.USD]: 0,
@@ -69,6 +75,9 @@ export const PRICING_PLANS = {
     // description: 'Access to all features and unlimited projects.',
     description:
       'Acesso a todas funcionalidades com créditos suficientes para iniciar pequenos projetos.',
+    usersCount: 1,
+    customVoices: 5,
+    charactersPerMonth: 50000,
     prices: {
       [INTERVALS.MONTH]: {
         [CURRENCIES.USD]: 15000,
@@ -88,6 +97,9 @@ export const PRICING_PLANS = {
     // description: 'Access to all features and unlimited projects.',
     description:
       'Para você que já está decolando. Contém tudo do Starter com mais vozes, usuários e maior tempo de gravação.',
+    usersCount: 10,
+    customVoices: 10,
+    charactersPerMonth: 200000,
     prices: {
       [INTERVALS.MONTH]: {
         [CURRENCIES.USD]: 25000,
@@ -120,6 +132,9 @@ type PricingPlan<T extends Plan = Plan> = {
     id: string
     name: string
     description: string
+    usersCount: number
+    customVoices: number
+    charactersPerMonth: number
     prices: PriceInterval
   }
 }
