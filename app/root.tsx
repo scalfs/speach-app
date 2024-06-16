@@ -75,6 +75,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         path: new URL(request.url).pathname,
         userPrefs: { theme: getTheme(request) },
       },
+      ENV: { EL_API_KEY: process.env.EL_API_KEY },
     } as const,
     {
       headers: combineHeaders(

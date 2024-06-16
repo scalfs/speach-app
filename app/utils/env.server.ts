@@ -6,6 +6,7 @@ const schema = z.object({
   ENCRYPTION_SECRET: z.string().optional(),
   DATABASE_URL: z.string().optional(),
   DEV_HOST_URL: z.string().optional(),
+  EL_API_KEY: z.string(),
   PROD_HOST_URL: z.string().optional(),
   RESEND_API_KEY: z.string(),
   GITHUB_CLIENT_ID: z.string().optional(),
@@ -40,6 +41,7 @@ export function getSharedEnvs() {
   return {
     DEV_HOST_URL: process.env.DEV_HOST_URL,
     PROD_HOST_URL: process.env.PROD_HOST_URL,
+    EL_API_KEY: process.env.EL_API_KEY,
   }
 }
 
