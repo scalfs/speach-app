@@ -21,7 +21,7 @@ import type {
   MetaFunction,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { useFetcher, useLoaderData } from '@remix-run/react'
 import { Loader2 } from 'lucide-react'
 import { useMemo, useState, type FormEvent } from 'react'
 import invariant from 'tiny-invariant'
@@ -77,10 +77,10 @@ const errorObject = { file: null, voiceId: null } as {
   voiceId: string | null
 }
 
-const MAX_CHAR_USAGE = 60 * SPEECH_TO_SPEECH_CHARACTERS_PER_SEC // 60 seconds
+const MAX_CHAR_USAGE = 60.0 * SPEECH_TO_SPEECH_CHARACTERS_PER_SEC // 60 seconds
 
 export default function SpeechToSpeech() {
-  // const fetcher = useFetcher()
+  const fetcher = useFetcher()
 
   const [file, setFile] = useState<any | null>(null)
   const [durationSecs, setDurationSecs] = useState<number | null>(null)
@@ -99,14 +99,14 @@ export default function SpeechToSpeech() {
     setErrors((errors) => ({ ...errors, voiceId: null }))
   }
 
-  const maxCharUsage = Math.min(availableCredits, MAX_CHAR_USAGE)
+  const maxCharUsage = Math.round(Math.min(availableCredits, MAX_CHAR_USAGE))
   const charUsage = useMemo(() => {
     // if (task === 'text-to-speech') return text.value.length
     if (durationSecs === null) return 0
     return Math.ceil(durationSecs * SPEECH_TO_SPEECH_CHARACTERS_PER_SEC)
   }, [durationSecs])
 
-  const buttonDisabled = !file || isCreating
+  const buttonDisabled = !file || isCreating || availableCredits < charUsage
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -120,7 +120,7 @@ export default function SpeechToSpeech() {
     )
 
     // Deduct credits from subscription
-    // fetcher.submit(formData, { method: 'POST' })
+    fetcher.submit(formData, { method: 'POST' })
 
     if (hasErrors) return setErrors(errors)
     setErrors(errorObject)
