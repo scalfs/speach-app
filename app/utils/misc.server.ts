@@ -29,7 +29,7 @@ export function getDomainPathname(request: Request) {
 export function getLocaleByQuality(request: Request) {
   const locales = getClientLocales(request)
 
-  if (!locales) return 'en'
+  if (!locales) return 'pt'
   return locales[1]
 }
 
@@ -37,7 +37,7 @@ export function getLocaleCurrency(request: Request) {
   const locales = getClientLocales(request)
   if (!locales) return CURRENCIES.DEFAULT
 
-  return locales.find((locale) => locale === 'en-US') ? CURRENCIES.USD : CURRENCIES.BRL
+  return locales.some((locale) => locale.includes('BR')) ? CURRENCIES.BRL : CURRENCIES.USD
 }
 
 /**

@@ -165,7 +165,7 @@ const UploadContainer = ({
           <div>
             <div className="pointer-events-none select-none space-y-1 text-center">
               <svg
-                className="mx-auto h-12 w-12 text-gray-500"
+                className="mx-auto h-12 w-12 text-muted-foreground"
                 viewBox="0 0 38 38"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -177,13 +177,13 @@ const UploadContainer = ({
                   stroke-linejoin="round"
                 />
               </svg>
-              <div className="flex text-sm text-gray-600">
-                <div className="relative cursor-pointer rounded-md font-medium text-gray-800 focus-within:outline-none">
+              <div className="mt-2 flex text-sm text-foreground/90">
+                <div className="relative cursor-pointer rounded-md font-medium text-foreground focus-within:outline-none">
                   Clique aqui para subir um arquivo, ou arraste e solte
                 </div>
               </div>
               {uploadMaxMBSize && (
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-foreground/60">
                   Arquivo de áudio, até {uploadMaxMBSize.toPrecision(2)}MB
                 </p>
               )}
@@ -193,7 +193,7 @@ const UploadContainer = ({
                 <div className="relative my-6 flex items-center">
                   <div className="w-full border-t border-gray-500" />
                   <div className="relative flex justify-center text-sm">
-                    <span className="whitespace-nowrap px-4 text-xs uppercase text-gray-700">
+                    <span className="whitespace-nowrap px-4 text-xs uppercase text-foreground/90">
                       or
                     </span>
                   </div>
@@ -207,7 +207,7 @@ const UploadContainer = ({
                     event.stopPropagation()
                     setStage('record')
                   }}>
-                  Gravar Audio
+                  Gravar áudio
                 </Button>
               </>
             )}
@@ -218,7 +218,7 @@ const UploadContainer = ({
         return (
           file && (
             <div
-              className="border-1 border-gray flex cursor-default items-center space-x-4 rounded-md border px-3 py-2"
+              className="flex cursor-default items-center space-x-4 rounded-md border border-border px-3 py-2"
               onClick={(event) => {
                 event.stopPropagation()
               }}>
@@ -227,11 +227,11 @@ const UploadContainer = ({
                   {file.name}
                 </span>
                 {duration && (
-                  <span className="ml-2 inline-block flex-shrink-0 rounded-full bg-gray-100 px-2 py-0.5 font-serif text-sm">
+                  <span className="ml-2 inline-block flex-shrink-0 rounded-full bg-accent px-2 py-0.5 font-serif text-sm">
                     {duration}
                   </span>
                 )}
-                <span className="ml-2 inline-block flex-shrink-0 rounded-full bg-gray-100 px-2 py-0.5 font-serif text-sm">
+                <span className="ml-2 inline-block flex-shrink-0 rounded-full bg-accent px-2 py-0.5 font-serif text-sm">
                   {prettyPrintFileSize(file.size)}
                 </span>
               </div>
@@ -242,7 +242,7 @@ const UploadContainer = ({
                       pauseAudio()
                       event.stopPropagation()
                     }}
-                    className="h-5 w-5 text-gray-700 hover:text-gray-500"
+                    className="h-5 w-5"
                     aria-hidden="true"
                   />
                 ) : (
@@ -256,7 +256,7 @@ const UploadContainer = ({
                       }
                       event.stopPropagation()
                     }}
-                    className="h-5 w-5 text-gray-700 hover:text-gray-500"
+                    className="h-5 w-5"
                     aria-hidden="true"
                   />
                 )}
@@ -266,7 +266,7 @@ const UploadContainer = ({
                     setStage('select')
                     event.stopPropagation()
                   }}
-                  className="h-5 w-5 text-gray-700 hover:text-gray-500"
+                  className="h-5 w-5"
                   aria-hidden="true"
                 />
               </div>

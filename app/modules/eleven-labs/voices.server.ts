@@ -19,7 +19,6 @@ export async function getVoices() {
   const voicesToDisplay = getPreSelectedVoices(voices)
 
   const voicesWithProperNames = replaceVoiceNames(voicesToDisplay)
-  console.log({ voicesWithProperNames })
   return clearVoiceNames(voicesWithProperNames).reverse()
 }
 

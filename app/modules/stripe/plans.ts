@@ -26,7 +26,7 @@ export type Interval = (typeof INTERVALS)[keyof typeof INTERVALS]
  * Enumerates supported currencies for billing.
  */
 export const CURRENCIES = {
-  DEFAULT: 'usd',
+  DEFAULT: 'brl',
   USD: 'usd',
   EUR: 'eur',
   BRL: 'brl',
