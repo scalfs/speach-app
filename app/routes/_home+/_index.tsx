@@ -119,10 +119,10 @@ export default function Index() {
             </span> */}
             {siteConfig.siteTitle}
           </Button>
-          <h1 className="text-center text-6xl font-bold leading-tight text-primary md:text-7xl lg:leading-tight">
-            O futuro
+          <h1 className="text-center text-4xl font-bold leading-tight text-foreground sm:text-6xl md:text-7xl lg:leading-tight">
+            O futuro da
             <br />
-            da comunicação
+            comunicação
           </h1>
           <p className="max-w-screen-sm text-center text-lg !leading-normal text-muted-foreground md:text-xl">
             Em alguns segundos grave seu roteiro comercial para vídeos, spots de rádio,

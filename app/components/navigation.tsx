@@ -14,6 +14,7 @@ import { ROUTE_PATH as ADMIN_PATH } from '#app/routes/admin+/_layout'
 import { ROUTE_PATH as LOGOUT_PATH } from '#app/routes/auth+/logout'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
 import { ROUTE_PATH as DASHBOARD_SETTINGS_PATH } from '#app/routes/dashboard+/settings'
+import { ROUTE_PATH as STS_PATH } from '#app/routes/dashboard+/sts'
 import { ROUTE_PATH as DASHBOARD_SETTINGS_BILLING_PATH } from '#app/routes/dashboard+/settings.billing'
 import { useRequestInfo } from '#app/utils/hooks/use-request-info'
 import { cn, getUserImgSrc, userHasRole } from '#app/utils/misc'
@@ -49,7 +50,8 @@ export function Navigation({ user, planId }: NavigationProps) {
   const location = useLocation()
   const isAdminPath = location.pathname === ADMIN_PATH
   const isDashboardPath = location.pathname === DASHBOARD_PATH
-  const isSettingsPath = location.pathname === DASHBOARD_SETTINGS_PATH
+  const isStsPath = location.pathname === STS_PATH
+  // const isSettingsPath = location.pathname === DASHBOARD_SETTINGS_PATH
   const isBillingPath = location.pathname === DASHBOARD_SETTINGS_BILLING_PATH
 
   return (
@@ -69,15 +71,15 @@ export function Navigation({ user, planId }: NavigationProps) {
                 variant="ghost"
                 className="gap-2 px-2 data-[state=open]:bg-primary/5">
                 <div className="flex items-center gap-2">
-                  {user?.image?.id ? (
+                  {/* {user?.image?.id ? (
                     <img
                       className="h-8 w-8 rounded-full object-cover"
                       alt={user.username ?? user.email}
                       src={getUserImgSrc(user.image?.id)}
                     />
                   ) : (
-                    <span className="h-8 w-8 rounded-full bg-gradient-to-br from-orange-200 from-10% via-orange-500 to-emerald-400" />
-                  )}
+                    <span className="h-8 w-8 rounded-full bg-gradient-to-br from-orange-200 from-5% via-orange-500 to-green-400 to-80%" />
+                  )} */}
 
                   <p className="text-sm font-medium text-foreground/80">
                     {user?.username || ''}
@@ -106,7 +108,7 @@ export function Navigation({ user, planId }: NavigationProps) {
                       src={getUserImgSrc(user.image?.id)}
                     />
                   ) : (
-                    <span className="h-6 w-6 rounded-full bg-gradient-to-br from-orange-200 from-10% via-orange-500 to-emerald-400" />
+                    <span className="h-6 w-6 rounded-full bg-gradient-to-br from-orange-200 from-5% via-orange-500 to-green-400 to-80%" />
                   )}
 
                   <p className="text-sm font-medium text-foreground/80">
@@ -160,7 +162,7 @@ export function Navigation({ user, planId }: NavigationProps) {
                     src={getUserImgSrc(user.image?.id)}
                   />
                 ) : (
-                  <span className="min-h-8 min-w-8 rounded-full bg-gradient-to-br from-orange-200 from-10% via-orange-500 to-emerald-400" />
+                  <span className="min-h-8 min-w-8 rounded-full bg-gradient-to-br from-orange-200 from-5% via-orange-500 to-green-400 to-80%" />
                 )}
               </Button>
             </DropdownMenuTrigger>
@@ -218,7 +220,7 @@ export function Navigation({ user, planId }: NavigationProps) {
         </div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-screen-xl items-center gap-3">
+      <div className="mx-auto flex w-full max-w-screen-xl items-center gap-2 md:gap-3">
         {user && userHasRole(user, 'admin') && (
           <div
             className={`flex h-12 items-center border-b-2 ${isAdminPath ? 'border-primary' : 'border-transparent'}`}>
@@ -244,6 +246,17 @@ export function Navigation({ user, planId }: NavigationProps) {
           </Link>
         </div>
         <div
+          className={`flex h-12 items-center border-b-2 ${isStsPath ? 'border-primary' : 'border-transparent'}`}>
+          <Link
+            to={STS_PATH}
+            prefetch="intent"
+            className={cn(
+              `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-foreground/80`,
+            )}>
+            Speach to Speach
+          </Link>
+        </div>
+        {/* <div
           className={`flex h-12 items-center border-b-2 ${isSettingsPath ? 'border-primary' : 'border-transparent'}`}>
           <Link
             to={DASHBOARD_SETTINGS_PATH}
@@ -253,7 +266,7 @@ export function Navigation({ user, planId }: NavigationProps) {
             )}>
             Configurações
           </Link>
-        </div>
+        </div> */}
         <div
           className={`flex h-12 items-center border-b-2 ${isBillingPath ? 'border-primary' : 'border-transparent'}`}>
           <Link
@@ -262,7 +275,7 @@ export function Navigation({ user, planId }: NavigationProps) {
             className={cn(
               `${buttonVariants({ variant: 'ghost', size: 'sm' })} text-foreground/80`,
             )}>
-            Assinatura
+            Plano
           </Link>
         </div>
       </div>

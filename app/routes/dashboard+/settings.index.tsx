@@ -141,7 +141,7 @@ export default function DashboardSettings() {
                 alt={user.username ?? user.email}
               />
             ) : (
-              <div className="h-20 w-20 rounded-full bg-gradient-to-br from-orange-200 from-10% via-orange-500 to-emerald-400" />
+              <div className="h-20 w-20 rounded-full bg-gradient-to-br from-orange-200 from-5% via-orange-500 to-green-400 to-80%" />
             )}
             <div className="absolute z-10 hidden h-full w-full items-center justify-center bg-primary/40 group-hover:flex">
               <Upload className="h-6 w-6 text-secondary" />
