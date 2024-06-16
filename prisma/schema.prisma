@@ -24,6 +24,9 @@ model User {
   subscription Subscription?
   roles        Role[]
 
+  tenants     TenantUser[]
+  invitation  TenantUserInvitation?
+
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 }
@@ -53,6 +56,9 @@ model Role {
   users       User[]
   permissions Permission[]
 
+  tenantUsers TenantUser[]
+  tenantUserInvitation TenantUserInvitation[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -79,6 +85,11 @@ model Plan {
   id            String         @id @unique
   name          String
   description   String?
+  
+  usersCount          Int @default(1)
+  customVoices        Int @default(0)
+  charactersPerMonth  Int @default(2000)
+
   prices        Price[]
   subscriptions Subscription[]
 
@@ -115,6 +126,53 @@ model Subscription {
   currentPeriodEnd   Int
   cancelAtPeriodEnd  Boolean @default(false)
 
+  availableCredits   Int @default(2000)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// · · · · · · · · · · · · · · · · · · · · 
+// Tenant Models
+// · · · · · · · · · · · · · · · · · · · · 
+model Tenant {
+  id                   String    @id @default(uuid())
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  name                 String
+  type                 Int
+  businessMainActivity String
+  registrationNumber   String
+  registrationDate     DateTime?
+  users                TenantUser[]
+  invitations          TenantUserInvitation[]
+}
+
+model TenantUser {
+  id               String    @id @default(uuid())
+  tenantId         String
+  tenant           Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId           String
+  role             Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  joined           Int
+  status           Int
+  firstName        String
+  lastName         String
+  email            String
+}
+
+model TenantUserInvitation {
+  id            String     @id @default(uuid())
+  tenantId      String
+  tenant        Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  email         String
+  firstName     String
+  lastName      String
+  roleId        String
+  role          Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  pending       Boolean
+  createdUserId String?    @unique
+  user          User?      @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
 }

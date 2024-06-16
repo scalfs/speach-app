@@ -66,7 +66,15 @@ async function seed() {
   }
 
   const seedProducts = Object.values(PRICING_PLANS).map(
-    async ({ id, name, description, prices }) => {
+    async ({
+      id,
+      name,
+      description,
+      prices,
+      charactersPerMonth,
+      customVoices,
+      usersCount,
+    }) => {
       // Format prices to match Stripe's API.
       const pricesByInterval = Object.entries(prices).flatMap(([interval, price]) => {
         return Object.entries(price).map(([currency, amount]) => ({
@@ -104,6 +112,9 @@ async function seed() {
           id,
           name,
           description,
+          usersCount,
+          customVoices,
+          charactersPerMonth,
           prices: {
             create: stripePrices.map((price) => ({
               id: price.id,
