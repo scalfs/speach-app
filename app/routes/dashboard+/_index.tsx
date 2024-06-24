@@ -20,17 +20,16 @@ import {
 import { getModelId } from '#app/modules/eleven-labs/model.server'
 import { toAudio, type ToAudioType } from '#app/modules/eleven-labs/toAudio.client'
 import { getVoices, type SpeachVoice } from '#app/modules/eleven-labs/voices.server'
-import { FREE_QUOTA } from '#app/modules/stripe/plans.js'
-import { type Subscription } from '@prisma/client'
+import { FREE_CHARS_QUOTA } from '#app/modules/stripe/plans.js'
 import {
-  type ShouldRevalidateFunction,
   useFetcher,
   useLoaderData,
+  type ShouldRevalidateFunction,
 } from '@remix-run/react'
 import { Loader2 } from 'lucide-react'
 import { useState, type ChangeEvent, type FormEvent } from 'react'
-import invariant from 'tiny-invariant'
 import { toast } from 'sonner'
+import invariant from 'tiny-invariant'
 
 export const meta: MetaFunction = () => {
   return [{ title: `${siteConfig.siteTitle} - TTS` }]
@@ -38,21 +37,27 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUser(request)
-  const subscription =
-    (await prisma.subscription.findUnique({ where: { userId: user.id } })) ??
-    ({} as Subscription)
+  const subscription = await prisma.subscription.findUnique({
+    where: { userId: user.id },
+    include: { plan: { select: { charactersPerMonth: true } } },
+  })
+  const availableCredits = subscription?.availableCredits ?? FREE_CHARS_QUOTA
+  const charactersPerMonth = subscription?.plan.charactersPerMonth ?? FREE_CHARS_QUOTA
 
   const voices = await getVoices()
   const modelId = await getModelId({})
 
-  const speachVoices = voices.map(({ name, voice_id }) => ({
-    name,
-    id: voice_id,
-  }))
+  const speachVoices = voices.map(({ name, voice_id }) => ({ name, id: voice_id }))
 
   // weird name to obfuscate the return
   const data = process.env.EL_API_KEY
-  return json({ user, data, subscription, voices: speachVoices, modelId } as const)
+  return json({
+    data,
+    modelId,
+    availableCredits,
+    charactersPerMonth,
+    voices: speachVoices,
+  } as const)
   // return json({ user, data, subscription } as const)
 }
 
@@ -81,10 +86,10 @@ export async function action({ request }: ActionFunctionArgs) {
       where: { userId: user.id },
       data: { availableCredits: { decrement: parseInt(textLenght ?? 0, 10) } },
     })
-    return { ok: true }
+    return { revalidate: true }
   } catch (e) {
     console.error(e)
-    return { ok: false }
+    return { revalidate: false }
   }
 }
 
@@ -92,7 +97,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   actionResult,
   defaultShouldRevalidate,
 }) => {
-  if (actionResult?.ok) return true
+  if (actionResult?.revalidate) return true
   return defaultShouldRevalidate
 }
 
@@ -116,7 +121,8 @@ export default function DashboardIndex() {
     voices = [],
     modelId = '',
     data: EL_API_KEY = '',
-    subscription: { availableCredits = 50 },
+    availableCredits,
+    charactersPerMonth,
   } = useLoaderData<typeof loader>()
   const [selectedVoice, setSelectedVoice] = useState<SpeachVoice | null>(null)
   const onSelectVoice = (voice: SpeachVoice | null) => {
@@ -255,7 +261,7 @@ export default function DashboardIndex() {
                 </label>
                 <div className="flex flex-col gap-2">
                   <label className="font-mono text-xs font-medium text-gray-400">
-                    Créditos disponíveis: {availableCredits}/{FREE_QUOTA}
+                    Créditos disponíveis: {availableCredits}/{charactersPerMonth}
                   </label>
                   <Button
                     type="submit"

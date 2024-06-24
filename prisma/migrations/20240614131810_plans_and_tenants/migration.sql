@@ -49,7 +49,7 @@ CREATE TABLE "new_Plan" (
     "description" TEXT,
     "usersCount" INTEGER NOT NULL DEFAULT 1,
     "customVoices" INTEGER NOT NULL DEFAULT 0,
-    "charactersPerMonth" INTEGER NOT NULL DEFAULT 2000,
+    "charactersPerMonth" INTEGER NOT NULL DEFAULT 500,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
@@ -67,7 +67,7 @@ CREATE TABLE "new_Subscription" (
     "currentPeriodStart" INTEGER NOT NULL,
     "currentPeriodEnd" INTEGER NOT NULL,
     "cancelAtPeriodEnd" BOOLEAN NOT NULL DEFAULT false,
-    "availableCredits" INTEGER NOT NULL DEFAULT 2000,
+    "availableCredits" INTEGER NOT NULL DEFAULT 500,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,

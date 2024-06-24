@@ -28,10 +28,11 @@ authenticator.use(
           console.log('[ Dev-Only ] TOTP Code:', code)
 
           // Email is not sent for admin users.
-          if (email.startsWith('admin')) {
-            console.log('Not sending email for admin user.')
-            return
-          }
+          // if (email.startsWith('admin')) {
+          // console.log('Not sending email for admin user.')
+          console.log('Not sending email in development.')
+          return
+          // }
         }
         await sendAuthEmail({ email, code, magicLink })
       },
@@ -46,6 +47,8 @@ authenticator.use(
       })
 
       if (!user) {
+        // TODO: add user creation login + Tenants & Workspace
+        // Different flow if has invite link (for Admins and Guest Users)
         user = await prisma.user.create({
           data: {
             roles: { connect: [{ name: 'user' }] },

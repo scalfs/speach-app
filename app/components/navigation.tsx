@@ -126,7 +126,7 @@ export function Navigation({ user, planId }: NavigationProps) {
                       size="sm"
                       className="w-full"
                       onClick={() => navigate(DASHBOARD_SETTINGS_BILLING_PATH)}>
-                      Upgrade para PRO
+                      Upgrade no Plano
                     </Button>
                   </DropdownMenuItem>
                 </>

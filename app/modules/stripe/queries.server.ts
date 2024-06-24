@@ -1,4 +1,10 @@
-import { FREE_QUOTA, PLANS } from '#app/modules/stripe/plans'
+import { subscriptionRepository } from '#app/infra/repository'
+import {
+  FREE_CHARS_QUOTA,
+  FREE_CUSTOM_VOICES_QUOTA,
+  FREE_USERS_QUOTA,
+  PLANS,
+} from '#app/modules/stripe/plans'
 import { stripe } from '#app/modules/stripe/stripe.server'
 import { ERRORS } from '#app/utils/constants/errors'
 import { prisma } from '#app/utils/db.server'
@@ -35,9 +41,7 @@ export async function createFreeSubscription({
   const user = await prisma.user.findUnique({ where: { id: userId } })
   if (!user || !user.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: user.id },
-  })
+  const subscription = await subscriptionRepository.getActiveSubscription(user.id)
   if (subscription) return false
 
   const currency = getLocaleCurrency(request)
@@ -63,7 +67,9 @@ export async function createFreeSubscription({
       planId: String(stripeSubscription.items.data[0].plan.product),
       priceId: String(stripeSubscription.items.data[0].price.id),
       interval: String(stripeSubscription.items.data[0].plan.interval),
-      availableCredits: plan?.charactersPerMonth ?? FREE_QUOTA,
+      availableCredits: FREE_CHARS_QUOTA, // for some reason, it doesn't return metadata.
+      usersCount: FREE_USERS_QUOTA,
+      customVoices: FREE_CUSTOM_VOICES_QUOTA,
       status: stripeSubscription.status,
       currentPeriodStart: stripeSubscription.current_period_start,
       currentPeriodEnd: stripeSubscription.current_period_end,
@@ -91,9 +97,7 @@ export async function createSubscriptionCheckout({
   const user = await prisma.user.findUnique({ where: { id: userId } })
   if (!user || !user.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: user.id },
-  })
+  const subscription = await subscriptionRepository.getActiveSubscription(user.id)
   if (subscription?.planId !== PLANS.FREE) return
 
   const currency = getLocaleCurrency(request)

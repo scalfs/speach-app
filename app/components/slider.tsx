@@ -69,6 +69,7 @@ export function Slider({
         )}
         className={cn('flex w-full items-center', `slider-wrapper-${size}`, className)}
         renderTrack={(props, state) => {
+          const { key, ...trackProps } = props
           const className = cn(
             !disabled && 'cursor-pointer',
             `slider-track-${size}`,
@@ -81,7 +82,7 @@ export function Slider({
           if (state.index === 0 && warnUntil !== null) {
             return (
               <>
-                <div {...props} />
+                <div {...trackProps} key={key} />
                 <div
                   className={className}
                   style={{
@@ -105,17 +106,18 @@ export function Slider({
                     zIndex: 1,
                   }}
                 />
-                <div {...props} />
+                <div {...trackProps} key={key} />
               </>
             )
           }
-          return <div {...props} />
+          return <div {...trackProps} key={key} />
         }}
         renderThumb={(props, state) => {
+          const { key, ...thumbProps } = props
           const warn =
             (warnUntil && currValue < warnUntil) || (warnFrom && warnFrom < currValue)
           return (
-            <div {...props}>
+            <div {...thumbProps} key={key}>
               <Thumb
                 disabled={disabled}
                 size={size}

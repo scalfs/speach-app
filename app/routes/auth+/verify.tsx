@@ -24,11 +24,11 @@ import { Button } from '#app/components/ui/button'
 export const ROUTE_PATH = '/auth/verify' as const
 
 export const VerifyLoginSchema = z.object({
-  code: z.string().min(6, 'Code must be at least 6 characters.'),
+  code: z.string().min(6, 'O código possui pelo menos 6 caracteres.'),
 })
 
 export const meta: MetaFunction = () => {
-  return [{ title: `${siteConfig.siteTitle} - Verify` }]
+  return [{ title: `${siteConfig.siteTitle} - Verificação` }]
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {

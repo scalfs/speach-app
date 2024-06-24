@@ -37,7 +37,10 @@ export function getLocaleCurrency(request: Request) {
   const locales = getClientLocales(request)
   if (!locales) return CURRENCIES.DEFAULT
 
-  return locales.some((locale) => locale.includes('BR')) ? CURRENCIES.BRL : CURRENCIES.USD
+  // For now, focusing on BRL market
+  // return locales.some((locale) => locale.includes('BR')) ? CURRENCIES.BRL : CURRENCIES.USD
+
+  return CURRENCIES.BRL
 }
 
 /**

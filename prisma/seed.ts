@@ -1,8 +1,7 @@
-import type { Interval } from '#app/modules/stripe/plans'
-import { PrismaClient } from '@prisma/client'
-import { prisma } from '#app/utils/db.server'
-import { stripe } from '#app/modules/stripe/stripe.server'
 import { PRICING_PLANS } from '#app/modules/stripe/plans'
+import { stripe } from '#app/modules/stripe/stripe.server'
+import { prisma } from '#app/utils/db.server'
+import { PrismaClient } from '@prisma/client'
 
 const client = new PrismaClient()
 
@@ -57,54 +56,50 @@ async function seed() {
   /**
    * Stripe Products.
    */
-  const products = await stripe.products.list({
-    limit: 3,
-  })
-  if (products?.data?.length) {
-    console.info('🏃‍♂️ Skipping Stripe products creation and seeding.')
-    return true
-  }
+  // const products = await stripe.products.list({
+  //   limit: 3,
+  // })
+
+  // if (products?.data?.length && products.data.filter(({ active }) => active).length) {
+  //   console.info(`📦 Stripe Products has been successfully created.`)
+  //   return true
+  // }
 
   const seedProducts = Object.values(PRICING_PLANS).map(
-    async ({
-      id,
-      name,
-      description,
-      prices,
-      charactersPerMonth,
-      customVoices,
-      usersCount,
-    }) => {
+    async ({ id, name, description, charactersPerMonth, customVoices, usersCount }) => {
       // Format prices to match Stripe's API.
-      const pricesByInterval = Object.entries(prices).flatMap(([interval, price]) => {
-        return Object.entries(price).map(([currency, amount]) => ({
-          interval,
-          currency,
-          amount,
-        }))
-      })
+      // const pricesByInterval = Object.entries(prices).flatMap(([interval, price]) => {
+      //   return Object.entries(price).map(([currency, amount]) => ({
+      //     interval,
+      //     currency,
+      //     amount,
+      //   }))
+      // })
 
       // Create Stripe product.
       await stripe.products.create({
         id,
         name,
         description: description || undefined,
+        metadata: { charactersPerMonth, customVoices, usersCount },
       })
 
       // Create Stripe price for the current product.
-      const stripePrices = await Promise.all(
-        pricesByInterval.map((price) => {
-          return stripe.prices.create({
-            product: id,
-            currency: price.currency ?? 'usd',
-            unit_amount: price.amount ?? 0,
-            tax_behavior: 'inclusive',
-            recurring: {
-              interval: (price.interval as Interval) ?? 'month',
-            },
-          })
-        }),
-      )
+      // const newStripePrices = await Promise.all(
+      //   pricesByInterval.map((price) => {
+      //     return stripe.prices.create({
+      //       product: id,
+      //       currency: price.currency ?? 'brl',
+      //       unit_amount: price.amount ?? 0,
+      //       tax_behavior: 'inclusive',
+      //       recurring: {
+      //         interval: (price.interval as Interval) ?? 'month',
+      //       },
+      //     })
+      //   }),
+      // )
+
+      const stripePrices = await stripe.prices.search({ query: `product:"${id}"` })
 
       // Store product into database.
       await prisma.plan.create({
@@ -116,7 +111,8 @@ async function seed() {
           customVoices,
           charactersPerMonth,
           prices: {
-            create: stripePrices.map((price) => ({
+            // create: newStripePrices.map((price) => ({
+            create: stripePrices.data.map((price) => ({
               id: price.id,
               amount: price.unit_amount ?? 0,
               currency: price.currency,
@@ -130,36 +126,37 @@ async function seed() {
       // Used to configure the Customer Portal.
       return {
         product: id,
-        prices: stripePrices.map((price) => price.id),
+        prices: stripePrices.data.map((price) => price.id),
+        // prices: newStripePrices.map((price) => price.id),
       }
     },
   )
 
   // Create Stripe products and stores them into database.
-  const seededProducts = await Promise.all(seedProducts)
+  await Promise.all(seedProducts)
   console.info(`📦 Stripe Products has been successfully created.`)
 
   // Configure Customer Portal.
-  await stripe.billingPortal.configurations.create({
-    business_profile: {
-      headline: 'Organization Name - Customer Portal',
-    },
-    features: {
-      customer_update: {
-        enabled: true,
-        allowed_updates: ['address', 'shipping', 'tax_id', 'email'],
-      },
-      invoice_history: { enabled: true },
-      payment_method_update: { enabled: true },
-      subscription_cancel: { enabled: true },
-      subscription_update: {
-        enabled: true,
-        default_allowed_updates: ['price'],
-        proration_behavior: 'always_invoice',
-        products: seededProducts.filter(({ product }) => product !== 'free'),
-      },
-    },
-  })
+  // await stripe.billingPortal.configurations.create({
+  //   business_profile: {
+  //     headline: 'Speach Studio - Customer Portal',
+  //   },
+  //   features: {
+  //     customer_update: {
+  //       enabled: true,
+  //       allowed_updates: ['address', 'shipping', 'tax_id', 'email'],
+  //     },
+  //     invoice_history: { enabled: true },
+  //     payment_method_update: { enabled: true },
+  //     subscription_cancel: { enabled: true },
+  //     subscription_update: {
+  //       enabled: true,
+  //       default_allowed_updates: ['price'],
+  //       proration_behavior: 'always_invoice',
+  //       products: seededProducts.filter(({ product }) => product !== 'free'),
+  //     },
+  //   },
+  // })
 
   console.info(`👒 Stripe Customer Portal has been successfully configured.`)
   console.info(

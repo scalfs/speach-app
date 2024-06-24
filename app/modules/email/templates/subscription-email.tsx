@@ -42,7 +42,7 @@ export function SubscriptionSuccessEmail({ email }: SubscriptionEmailOptions) {
           <Text style={{ fontSize: '16px', lineHeight: '26px' }}>Olá {email}!</Text>
           <Text style={{ fontSize: '16px', lineHeight: '26px' }}>
             {/* Your subscription to PRO has been successfully processed. */}
-            Sua assinatura PRO foi realizada com sucesso.
+            Sua assinatura foi realizada com sucesso.
             <br />
             {/* We hope you enjoy the new features! */}
             Esperamos que aproveite as novas ferramentas!
@@ -63,7 +63,7 @@ export function SubscriptionErrorEmail({ email }: SubscriptionEmailOptions) {
     <Html>
       <Head />
       {/* <Preview>Subscription Issue - Customer Support</Preview> */}
-      <Preview>Problema na Assinatura - Suporte</Preview>
+      <Preview>Problema na Assinatura</Preview>
       <Body
         style={{
           backgroundColor: '#ffffff',
@@ -77,9 +77,9 @@ export function SubscriptionErrorEmail({ email }: SubscriptionEmailOptions) {
             height="60"
             alt=""
           />
-          <Text style={{ fontSize: '16px', lineHeight: '26px' }}>Hello {email}.</Text>
+          <Text style={{ fontSize: '16px', lineHeight: '26px' }}>Olá {email}.</Text>
           <Text style={{ fontSize: '16px', lineHeight: '26px' }}>
-            Infelizmente não conseguimos processar sua assinatura PRO.
+            Infelizmente não conseguimos processar sua assinatura.
             {/* We were unable to process your subscription to PRO tier. */}
             <br />
             {/* But don't worry, we'll not charge you anything. */}
@@ -118,7 +118,7 @@ export async function sendSubscriptionSuccessEmail({
 
   await sendEmail({
     to: email,
-    subject: 'Assinatura PRO realizada com sucesso',
+    subject: 'Assinatura realizada com sucesso',
     html,
   })
 }

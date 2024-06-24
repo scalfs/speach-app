@@ -1,13 +1,14 @@
+import { subscriptionRepository } from '#app/infra/repository'
+import {
+  sendSubscriptionErrorEmail,
+  sendSubscriptionSuccessEmail,
+} from '#app/modules/email/templates/subscription-email'
+import { PLANS } from '#app/modules/stripe/plans'
+import { stripe } from '#app/modules/stripe/stripe.server'
+import { ERRORS } from '#app/utils/constants/errors'
+import { prisma } from '#app/utils/db.server'
 import type { ActionFunctionArgs } from '@remix-run/node'
 import { z } from 'zod'
-import { stripe } from '#app/modules/stripe/stripe.server'
-import { PLANS } from '#app/modules/stripe/plans'
-import { prisma } from '#app/utils/db.server'
-import {
-  sendSubscriptionSuccessEmail,
-  sendSubscriptionErrorEmail,
-} from '#app/modules/email/templates/subscription-email'
-import { ERRORS } from '#app/utils/constants/errors'
 
 export const ROUTE_PATH = '/api/webhook' as const
 
@@ -18,7 +19,11 @@ export const ROUTE_PATH = '/api/webhook' as const
  * @returns The Stripe event object.
  */
 async function getStripeEvent(request: Request) {
-  if (!process.env.PROD_STRIPE_WEBHOOK_ENDPOINT) {
+  const secret =
+    process.env.NODE_ENV === 'development'
+      ? process.env.DEV_STRIPE_WEBHOOK_ENDPOINT
+      : process.env.PROD_STRIPE_WEBHOOK_ENDPOINT
+  if (!secret) {
     throw new Error(`Stripe - ${ERRORS.ENVS_NOT_INITIALIZED}`)
   }
 
@@ -26,11 +31,7 @@ async function getStripeEvent(request: Request) {
     const signature = request.headers.get('Stripe-Signature')
     if (!signature) throw new Error(ERRORS.STRIPE_MISSING_SIGNATURE)
     const payload = await request.text()
-    const event = stripe.webhooks.constructEvent(
-      payload,
-      signature,
-      process.env.PROD_STRIPE_WEBHOOK_ENDPOINT,
-    )
+    const event = stripe.webhooks.constructEvent(payload, signature, secret)
     return event
   } catch (err: unknown) {
     console.log(err)
@@ -48,7 +49,6 @@ export async function action({ request }: ActionFunctionArgs) {
        */
       case 'checkout.session.completed': {
         const session = event.data.object
-
         const { customer: customerId, subscription: subscriptionId } = z
           .object({ customer: z.string(), subscription: z.string() })
           .parse(session)
@@ -57,15 +57,22 @@ export async function action({ request }: ActionFunctionArgs) {
         if (!user) throw new Error(ERRORS.SOMETHING_WENT_WRONG)
 
         const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+
+        const planId = String(subscription.items.data[0].plan.product)
+        const priceId = String(subscription.items.data[0].price.id)
+        const plan = await prisma.plan.findUniqueOrThrow({ where: { id: planId } })
+
         await prisma.subscription.update({
           where: { userId: user.id },
           data: {
             id: subscription.id,
-            userId: user.id,
-            planId: String(subscription.items.data[0].plan.product),
-            priceId: String(subscription.items.data[0].price.id),
-            interval: String(subscription.items.data[0].plan.interval),
+            plan: { connect: { id: planId } },
+            price: { connect: { id: priceId } },
             status: subscription.status,
+            usersCount: plan.usersCount,
+            customVoices: plan.customVoices,
+            availableCredits: plan.charactersPerMonth,
+            interval: String(subscription.items.data[0].plan.interval),
             currentPeriodStart: subscription.current_period_start,
             currentPeriodEnd: subscription.current_period_end,
             cancelAtPeriodEnd: subscription.cancel_at_period_end,
@@ -78,16 +85,33 @@ export async function action({ request }: ActionFunctionArgs) {
         // Not required, but it's a good practice to keep just a single active plan.
         const subscriptions = (
           await stripe.subscriptions.list({ customer: customerId })
-        ).data.map((sub) => sub.items)
+        ).data.map(({ items }) => items)
 
         if (subscriptions.length > 1) {
-          const freeSubscription = subscriptions.find((sub) =>
-            sub.data.some((item) => item.price.product === PLANS.FREE),
+          const freeSubscription = subscriptions.find(({ data }) =>
+            data.some((item) => item.price.product === PLANS.FREE),
           )
           if (freeSubscription) {
             await stripe.subscriptions.cancel(freeSubscription?.data[0].subscription)
           }
         }
+
+        // TODO: cancel previous subscription, not necessarily the free one.
+
+        // const subscriptionsList = await stripe.subscriptions.list({
+        // 	customer: customerId,
+        // })
+        // const freeSubscriptions = subscriptionsList.data
+        // 	.map(subscription => {
+        // 		return subscription.items.data.find(
+        // 			item => item.price.product === PLANS.FREE,
+        // 		)
+        // 	})
+        // 	.filter(item => item !== undefined)
+
+        // if (freeSubscriptions[0]) {
+        // 	await stripe.subscriptions.cancel(freeSubscriptions[0].subscription)
+        // }
 
         return new Response(null)
       }
@@ -105,15 +129,23 @@ export async function action({ request }: ActionFunctionArgs) {
         const user = await prisma.user.findUnique({ where: { customerId } })
         if (!user) throw new Error(ERRORS.SOMETHING_WENT_WRONG)
 
+        const planId = String(subscription.items.data[0].plan.product)
+        const priceId = String(subscription.items.data[0].price.id)
+        const plan = await prisma.plan.findUniqueOrThrow({ where: { id: planId } })
+
         await prisma.subscription.update({
           where: { userId: user.id },
           data: {
             id: subscription.id,
-            userId: user.id,
-            planId: String(subscription.items.data[0].plan.product),
-            priceId: String(subscription.items.data[0].price.id),
-            interval: String(subscription.items.data[0].plan.interval),
+            plan: { connect: { id: planId } },
+            price: { connect: { id: priceId } },
             status: subscription.status,
+            usersCount: plan.usersCount,
+            customVoices: plan.customVoices,
+            availableCredits: plan.charactersPerMonth,
+            // TODO - WARN: careful here. Users can restart their monthly credits if they update and, in sequence, downgrade their plan
+            // TODO: create CRON to restart availableCredits every month. Or at every subscription month renewal. Or every 1 month after subscription date.
+            interval: String(subscription.items.data[0].plan.interval),
             currentPeriodStart: subscription.current_period_start,
             currentPeriodEnd: subscription.current_period_end,
             cancelAtPeriodEnd: subscription.cancel_at_period_end,
@@ -128,13 +160,11 @@ export async function action({ request }: ActionFunctionArgs) {
        */
       case 'customer.subscription.deleted': {
         const subscription = event.data.object
-        const { id } = z.object({ id: z.string() }).parse(subscription)
+        const { id, status } = z
+          .object({ id: z.string(), status: z.string() })
+          .parse(subscription)
 
-        const dbSubscription = await prisma.subscription.findUnique({
-          where: { id },
-        })
-        if (dbSubscription)
-          await prisma.subscription.delete({ where: { id: dbSubscription.id } })
+        await subscriptionRepository.updateSubscription(id, { status })
 
         return new Response(null)
       }

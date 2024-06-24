@@ -1,7 +1,7 @@
 import { Header } from '#app/components/header'
 import { Navigation } from '#app/components/navigation'
+import { subscriptionRepository } from '#app/infra/repository'
 import { siteConfig } from '#app/utils/constants/brand'
-import { prisma } from '#app/utils/db.server'
 import { requireUserWithRole } from '#app/utils/permissions.server'
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
@@ -16,9 +16,7 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUserWithRole(request, 'admin')
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: user.id },
-  })
+  const subscription = await subscriptionRepository.getActiveSubscription(user.id)
   return json({ user, subscription } as const)
 }
 

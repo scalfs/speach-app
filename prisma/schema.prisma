@@ -88,7 +88,7 @@ model Plan {
   
   usersCount          Int @default(1)
   customVoices        Int @default(0)
-  charactersPerMonth  Int @default(2000)
+  charactersPerMonth  Int @default(500)
 
   prices        Price[]
   subscriptions Subscription[]
@@ -126,7 +126,9 @@ model Subscription {
   currentPeriodEnd   Int
   cancelAtPeriodEnd  Boolean @default(false)
 
-  availableCredits   Int @default(2000)
+  usersCount         Int @default(1)
+  customVoices       Int @default(0)
+  availableCredits   Int @default(500)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

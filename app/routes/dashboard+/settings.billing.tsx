@@ -1,39 +1,36 @@
-import type {
-  MetaFunction,
-  LoaderFunctionArgs,
-  ActionFunctionArgs,
-} from '@remix-run/node'
-import type { Interval, Plan } from '#app/modules/stripe/plans'
-import { useState } from 'react'
-import { Form, useLoaderData } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
-import { requireSessionUser } from '#app/modules/auth/auth.server'
-import { PLANS, PRICING_PLANS, INTERVALS, CURRENCIES } from '#app/modules/stripe/plans'
-import {
-  createSubscriptionCheckout,
-  createCustomerPortal,
-} from '#app/modules/stripe/queries.server'
-import { prisma } from '#app/utils/db.server'
-import { getLocaleCurrency } from '#app/utils/misc.server'
-import { INTENTS } from '#app/utils/constants/misc'
-import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
-import { Switch } from '#app/components/ui/switch'
 import { Button } from '#app/components/ui/button'
+import { Switch } from '#app/components/ui/switch'
+import { subscriptionRepository } from '#app/infra/repository'
+import { requireSessionUser } from '#app/modules/auth/auth.server'
+import type { Interval, Plan } from '#app/modules/stripe/plans'
+import { CURRENCIES, INTERVALS, PLANS, PRICING_PLANS } from '#app/modules/stripe/plans'
+import {
+  createCustomerPortal,
+  createSubscriptionCheckout,
+} from '#app/modules/stripe/queries.server'
+import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
+import { siteConfig } from '#app/utils/constants/brand.js'
+import { INTENTS } from '#app/utils/constants/misc'
+import { getLocaleCurrency } from '#app/utils/misc.server'
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
+import { Form, useLoaderData } from '@remix-run/react'
+import { useState } from 'react'
 
 export const ROUTE_PATH = '/dashboard/settings/billing' as const
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'Speach - Assinatura' }]
+  return [{ title: `${siteConfig.siteTitle} - Assinatura` }]
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const sessionUser = await requireSessionUser(request, {
-    redirectTo: LOGIN_PATH,
-  })
+  const sessionUser = await requireSessionUser(request, { redirectTo: LOGIN_PATH })
 
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: sessionUser.id },
-  })
+  const subscription = await subscriptionRepository.getActiveSubscription(sessionUser.id)
   const currency = getLocaleCurrency(request)
 
   return json({ subscription, currency } as const)
@@ -80,9 +77,14 @@ export default function DashboardBilling() {
     INTERVALS.MONTH,
   )
 
+  const selectedPlanName = Object.values(PRICING_PLANS).find(
+    ({ id }) => id === selectedPlanId,
+  )?.name
+
   return (
     <div className="flex h-full w-full flex-col gap-6">
-      <div className="flex w-full flex-col gap-2 p-6 py-2">
+      {/* Test Disclaimer */}
+      {/* <div className="flex w-full flex-col gap-2 p-6 py-2">
         <h2 className="text-xl font-medium text-foreground">
           Este é um app versão teste.
         </h2>
@@ -98,7 +100,7 @@ export default function DashboardBilling() {
           </a>
           .
         </p>
-      </div>
+      </div> */}
 
       {/* Plans */}
       <div className="flex w-full flex-col items-start rounded-lg border border-border bg-card">
@@ -136,7 +138,7 @@ export default function DashboardBilling() {
                     </span>
                     {plan.id !== PLANS.FREE && (
                       <span className="flex items-center rounded-md bg-primary/10 px-1.5 text-sm font-medium text-foreground/80">
-                        {currency === CURRENCIES.USD ? '$' : 'R$'}{' '}
+                        {currency === CURRENCIES.BRL ? 'R$' : '$'}{' '}
                         {selectedPlanInterval === INTERVALS.MONTH
                           ? plan.prices[INTERVALS.MONTH][currency] / 100
                           : plan.prices[INTERVALS.YEAR][currency] / 100}{' '}
@@ -151,7 +153,7 @@ export default function DashboardBilling() {
 
                 {/* Billing Switch */}
                 {plan.id !== PLANS.FREE && (
-                  <div className="flex items-center gap-2 px-4">
+                  <div className="items-center gap-2 px-4 sm:flex">
                     <label
                       htmlFor="interval-switch"
                       className="text-start text-sm text-foreground/60">
@@ -200,19 +202,20 @@ export default function DashboardBilling() {
                   </p>
                 </div>
                 <p className="text-start text-sm font-normal text-foreground/60">
-                  {PRICING_PLANS[PLANS.STARTER].description}
+                  {PRICING_PLANS[subscription.planId as Plan]?.description ?? ''}
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        <div className="flex min-h-14 w-full items-center justify-between rounded-lg rounded-t-none border-t border-border bg-secondary px-6 py-3 dark:bg-card">
+        <div className="flex min-h-14 w-full flex-col items-center justify-between rounded-lg rounded-t-none border-t border-border bg-secondary px-6 py-3 dark:bg-card sm:flex-row">
           {/* <p className="text-sm font-normal text-foreground/60">
             You will not be charged for testing the subscription upgrade.
           </p> */}
-          <p className="text-sm font-normal text-foreground/60">
-            Você não será cobrado ao testar o upgrade na assinatura.
+          <p className="text-center text-sm font-normal text-foreground/60 sm:text-left">
+            {/* Você não será cobrado ao testar o upgrade na assinatura. */}
+            Aproveite as vantagens de seu novo plano.
           </p>
           {subscription?.planId === PLANS.FREE && (
             <Form method="POST">
@@ -224,7 +227,9 @@ export default function DashboardBilling() {
                 name={INTENTS.INTENT}
                 value={INTENTS.SUBSCRIPTION_CREATE_CHECKOUT}
                 disabled={selectedPlanId === PLANS.FREE}>
-                Upgrade para o plano PRO
+                {selectedPlanName && selectedPlanId !== PLANS.FREE
+                  ? `Upgrade para o plano ${selectedPlanName}`
+                  : 'Selecione o plano para upgrade'}
               </Button>
             </Form>
           )}

@@ -28,7 +28,6 @@ export type Interval = (typeof INTERVALS)[keyof typeof INTERVALS]
 export const CURRENCIES = {
   DEFAULT: 'brl',
   USD: 'usd',
-  EUR: 'eur',
   BRL: 'brl',
 } as const
 
@@ -44,7 +43,9 @@ export type Currency = (typeof CURRENCIES)[keyof typeof CURRENCIES]
  * - 'name' and 'description' fields are used in Stripe Checkout and client UI.
  */
 
-export const FREE_QUOTA = 2000
+export const FREE_CHARS_QUOTA = 500
+export const FREE_USERS_QUOTA = 1
+export const FREE_CUSTOM_VOICES_QUOTA = 0
 
 export const PRICING_PLANS = {
   [PLANS.FREE]: {
@@ -53,20 +54,12 @@ export const PRICING_PLANS = {
     // description: 'Start with the basics, upgrade anytime.',
     description:
       'O básico para conhecer nosso sistema. Faça o upgrade a qualquer momento.',
-    usersCount: 1,
-    customVoices: 0,
-    charactersPerMonth: FREE_QUOTA,
+    usersCount: FREE_USERS_QUOTA,
+    customVoices: FREE_CUSTOM_VOICES_QUOTA,
+    charactersPerMonth: FREE_CHARS_QUOTA,
     prices: {
-      [INTERVALS.MONTH]: {
-        [CURRENCIES.USD]: 0,
-        [CURRENCIES.EUR]: 0,
-        [CURRENCIES.BRL]: 0,
-      },
-      [INTERVALS.YEAR]: {
-        [CURRENCIES.USD]: 0,
-        [CURRENCIES.EUR]: 0,
-        [CURRENCIES.BRL]: 0,
-      },
+      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 0, [CURRENCIES.BRL]: 0 },
+      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 0, [CURRENCIES.BRL]: 0 },
     },
   },
   [PLANS.STARTER]: {
@@ -79,16 +72,8 @@ export const PRICING_PLANS = {
     customVoices: 5,
     charactersPerMonth: 50000,
     prices: {
-      [INTERVALS.MONTH]: {
-        [CURRENCIES.USD]: 15000,
-        [CURRENCIES.EUR]: 15000,
-        [CURRENCIES.BRL]: 15000,
-      },
-      [INTERVALS.YEAR]: {
-        [CURRENCIES.USD]: 150000,
-        [CURRENCIES.EUR]: 150000,
-        [CURRENCIES.BRL]: 150000,
-      },
+      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 5000, [CURRENCIES.BRL]: 15000 },
+      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 50000, [CURRENCIES.BRL]: 150000 },
     },
   },
   [PLANS.ROCKET]: {
@@ -101,16 +86,8 @@ export const PRICING_PLANS = {
     customVoices: 10,
     charactersPerMonth: 200000,
     prices: {
-      [INTERVALS.MONTH]: {
-        [CURRENCIES.USD]: 25000,
-        [CURRENCIES.EUR]: 25000,
-        [CURRENCIES.BRL]: 25000,
-      },
-      [INTERVALS.YEAR]: {
-        [CURRENCIES.USD]: 250000,
-        [CURRENCIES.EUR]: 250000,
-        [CURRENCIES.BRL]: 250000,
-      },
+      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 7500, [CURRENCIES.BRL]: 25000 },
+      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 75000, [CURRENCIES.BRL]: 250000 },
     },
   },
 } satisfies PricingPlan
