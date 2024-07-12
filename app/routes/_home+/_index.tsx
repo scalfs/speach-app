@@ -9,7 +9,7 @@ import LogoColor from '#app/assets/logo-color.png'
 import LogoWhite from '#app/assets/logo-white.png'
 import ShadowPNG from '#public/images/shadow.png'
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
-import { json } from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 
 export const meta: MetaFunction = () => {
@@ -17,6 +17,10 @@ export const meta: MetaFunction = () => {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  // redirecting for now. Our landing page is in another domain. 
+  // Sending users straight to login or dashboard.
+  return redirect(LOGIN_PATH)
+
   const sessionUser = await authenticator.isAuthenticated(request)
   return json({ user: sessionUser } as const)
 }
