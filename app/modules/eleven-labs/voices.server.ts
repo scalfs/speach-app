@@ -19,7 +19,7 @@ export async function getVoices() {
   const voicesToDisplay = getPreSelectedVoices(voices)
 
   // const voicesWithProperNames = replaceVoiceNames(voicesToDisplay)
-  return clearVoiceNames(voicesToDisplay).reverse()
+  return voicesToDisplay.reverse()
 }
 
 // const getPreSelectedVoices = (voices: Voice[]) =>
@@ -36,8 +36,8 @@ const getPreSelectedVoices = (voices: Voice[]) =>
 //     return newName ? { ...voice, name: newName } : voice
 //   })
 
-const clearVoiceNames = (voices: Voice[]) =>
-  voices.map((voice) => ({ ...voice, name: voice.name.split(/\s+/)[0] }))
+// const clearVoiceNames = (voices: Voice[]) =>
+//   voices.map((voice) => ({ ...voice, name: voice.name.split(/\s+/)[0] }))
 
 // const capitalize = (str: string) =>
 //   str.charAt(0).toUpperCase() + str.slice(1).toLocaleLowerCase();
