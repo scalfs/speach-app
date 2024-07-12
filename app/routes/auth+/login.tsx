@@ -135,7 +135,7 @@ export default function Login() {
         </Button>
       </Form>
 
-      <div className="relative flex w-full items-center justify-center">
+      {/* <div className="relative flex w-full items-center justify-center">
         <span className="absolute w-full border-b border-border" />
         <span className="z-10 bg-card px-2 text-xs font-medium uppercase text-foreground/60">
           Ou continue com
@@ -156,12 +156,12 @@ export default function Login() {
           </svg>
           Github
         </Button>
-      </Form>
+      </Form> */}
 
       <p className="px-6 text-center text-sm font-normal leading-normal text-foreground/60">
         Ao clicar em continuar, você concorda com nossos{' '}
         <a href="/" className="underline hover:text-primary">
-          Termo de serviço
+          Termos de serviço
         </a>{' '}
         e{' '}
         <a href="/" className="underline hover:text-primary">
