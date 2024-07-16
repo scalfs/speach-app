@@ -77,12 +77,12 @@ async function seed() {
       // })
 
       // Create Stripe product.
-      await stripe.products.create({
-        id,
-        name,
-        description: description || undefined,
-        metadata: { charactersPerMonth, customVoices, usersCount },
-      })
+      // await stripe.products.create({
+      //   id,
+      //   name,
+      //   description: description || undefined,
+      //   metadata: { charactersPerMonth, customVoices, usersCount },
+      // })
 
       // Create Stripe price for the current product.
       // const newStripePrices = await Promise.all(
