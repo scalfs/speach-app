@@ -83,7 +83,7 @@ export default function Login() {
   }, [isHydrated])
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-96 flex-col items-center justify-center gap-6">
+    <div className="mx-auto flex h-full w-full flex-col items-center justify-center gap-6 max-w-96">
       <div className="mb-2 flex flex-col gap-2">
         <h3 className="text-center text-2xl font-medium text-foreground">
           Vamos começar
@@ -96,12 +96,11 @@ export default function Login() {
       <Form
         method="POST"
         autoComplete="off"
-        className="flex w-full flex-col items-start gap-1"
+        className="flex w-full flex-col items-center gap-1"
         {...getFormProps(emailForm)}>
         {/* Security */}
         <AuthenticityTokenInput />
         <HoneypotInputs />
-
         <div className="flex w-full flex-col gap-1.5">
           <label htmlFor="email" className="sr-only">
             Email

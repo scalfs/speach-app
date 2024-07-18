@@ -52,7 +52,7 @@ export default function Layout() {
         </h2>
       </div>
 
-      <div className="flex h-full w-full flex-col border-l border-primary/5 bg-card lg:w-[50%]">
+      <div className="flex h-full w-full flex-col border-l border-primary/5 bg-card lg:w-[50%] p-8">
         <Outlet />
       </div>
     </div>
