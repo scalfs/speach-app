@@ -1,14 +1,4 @@
-// const PRE_SELECTED_VOICES = [
-//   { name: 'Ethan', newName: 'Enzo' },
-//   { name: 'Anthoni', newName: 'Antônio' },
-//   { name: 'Arnold', newName: 'Artur' },
-//   { name: 'Bella', newName: 'Beatriz' },
-//   { name: 'Callum', newName: 'Caio' },
-//   { name: 'Charlie', newName: 'Carlos' },
-//   { name: 'Charlotte', newName: 'Clara' },
-//   { name: 'Clyde', newName: 'Cláudio' },
-//   { name: 'Daniel', newName: 'Davi' },
-// ]
+import { AVAILABLE_VOICES } from './voices'
 
 export async function getVoices() {
   const apiKey = process.env.EL_API_KEY
@@ -18,29 +8,11 @@ export async function getVoices() {
   const { voices }: Response = await response.json()
   const voicesToDisplay = getPreSelectedVoices(voices)
 
-  // const voicesWithProperNames = replaceVoiceNames(voicesToDisplay)
   return voicesToDisplay.reverse()
 }
 
-// const getPreSelectedVoices = (voices: Voice[]) =>
-//   voices.filter(
-//     ({ name, category }) =>
-//       PRE_SELECTED_VOICES.map((v) => v.name).includes(name) || category === 'cloned',
-//   )
 const getPreSelectedVoices = (voices: Voice[]) =>
-  voices.filter(({ category }) => category === 'cloned')
-
-// const replaceVoiceNames = (voices: Voice[]) =>
-//   voices.map((voice) => {
-//     const newName = PRE_SELECTED_VOICES.find(({ name }) => name === voice.name)?.newName
-//     return newName ? { ...voice, name: newName } : voice
-//   })
-
-// const clearVoiceNames = (voices: Voice[]) =>
-//   voices.map((voice) => ({ ...voice, name: voice.name.split(/\s+/)[0] }))
-
-// const capitalize = (str: string) =>
-//   str.charAt(0).toUpperCase() + str.slice(1).toLocaleLowerCase();
+  voices.filter(({ voice_id }) => AVAILABLE_VOICES.includes(voice_id))
 
 export interface SpeachVoice {
   id: string
