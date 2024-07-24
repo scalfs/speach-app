@@ -1,4 +1,5 @@
 // TODO: move this to DB and associate voices to subscriptions/roles
+// This must be used when the EL_API_KEY from junior@pontocomaudio.net is active
 export const AVAILABLE_VOICES = [
   'j08XqtjVs3KAr6mTIyWn',
   '2yRlrIiSvA1uvpfOs0K2',
