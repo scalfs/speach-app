@@ -6,8 +6,10 @@ import type { Price } from '@prisma/client'
  */
 export const PLANS = {
   FREE: 'free',
+  EASY: 'easy',
   STARTER: 'starter',
   ROCKET: 'rocket',
+  // INFINITY: 'infinity',
 } as const
 
 export type Plan = (typeof PLANS)[keyof typeof PLANS]
@@ -18,6 +20,7 @@ export type Plan = (typeof PLANS)[keyof typeof PLANS]
 export const INTERVALS = {
   MONTH: 'month',
   YEAR: 'year',
+  ONETIME: 'oneTime',
 } as const
 
 export type Interval = (typeof INTERVALS)[keyof typeof INTERVALS]
@@ -62,12 +65,24 @@ export const PRICING_PLANS = {
       [INTERVALS.YEAR]: { [CURRENCIES.USD]: 0, [CURRENCIES.BRL]: 0 },
     },
   },
+  [PLANS.EASY]: {
+    id: PLANS.EASY,
+    name: 'Easy',
+    description:
+      'Quer subir de nível? Nosso plano Easy inclui: 25.000 caracteres mensais | 30 minutos de gravação | Acesso a vozes profissionais | Suporte WhatsApp',
+    usersCount: 1,
+    customVoices: 2,
+    charactersPerMonth: 25000,
+    prices: {
+      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 2000, [CURRENCIES.BRL]: 9000 },
+      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 20000, [CURRENCIES.BRL]: 90000 },
+    },
+  },
   [PLANS.STARTER]: {
     id: PLANS.STARTER,
     name: 'Starter',
-    // description: 'Access to all features and unlimited projects.',
     description:
-      'Acesso a todas funcionalidades com créditos suficientes para iniciar pequenos projetos.',
+      'Vamos acelerar seus projetos! Nosso plano Starter inclui: 50.000 caracteres mensais | 60 minutos de gravação | Acesso a vozes profissionais | Suporte WhatsApp',
     usersCount: 1,
     customVoices: 5,
     charactersPerMonth: 50000,
@@ -79,24 +94,38 @@ export const PRICING_PLANS = {
   [PLANS.ROCKET]: {
     id: PLANS.ROCKET,
     name: 'Rocket',
-    // description: 'Access to all features and unlimited projects.',
     description:
-      'Para você que já está decolando. Contém tudo do Starter com mais vozes, usuários e maior tempo de gravação.',
+      'Para você que já está decolando! Nosso plano Rocket inclui: 100.000 caracteres mensais | 120 minutos de gravação | Acesso a vozes profissionais | Suporte WhatsApp',
     usersCount: 10,
     customVoices: 10,
-    charactersPerMonth: 200000,
+    charactersPerMonth: 100000,
     prices: {
       [INTERVALS.MONTH]: { [CURRENCIES.USD]: 7500, [CURRENCIES.BRL]: 25000 },
       [INTERVALS.YEAR]: { [CURRENCIES.USD]: 75000, [CURRENCIES.BRL]: 250000 },
     },
   },
+  // [PLANS.INFINITY]: {
+  //   id: PLANS.INFINITY,
+  //   name: 'Infinity',
+  //   description:
+  //     'Amou o Speach? O plano Infinity tem o melhor valor. Tenha acesso vitalício às features atuais + tudo oferecido no Rocket, sem se preocupar com as mensalidades.',
+  //   usersCount: 10,
+  //   customVoices: 10,
+  //   charactersPerMonth: 100000,
+  //   prices: {
+  //     [INTERVALS.ONETIME]: { [CURRENCIES.USD]: 40000, [CURRENCIES.BRL]: 200000 },
+  //   },
+  // },
 } satisfies PricingPlan
 
 /**
  * A type helper defining prices for each billing interval and currency.
  */
-type PriceInterval<I extends Interval = Interval, C extends Currency = Currency> = {
-  [interval in I]: {
+export type PriceInterval<
+  I extends Interval = Interval,
+  C extends Currency = Currency,
+> = {
+  [interval in I]?: {
     [currency in C]: Price['amount']
   }
 }
@@ -104,7 +133,7 @@ type PriceInterval<I extends Interval = Interval, C extends Currency = Currency>
 /**
  * A type helper defining the structure for subscription pricing plans.
  */
-type PricingPlan<T extends Plan = Plan> = {
+export type PricingPlan<T extends Plan = Plan> = {
   [key in T]: {
     id: string
     name: string

@@ -106,6 +106,7 @@ export async function createSubscriptionCheckout({
     include: { prices: true },
   })
 
+  // const interval = planId === PLANS.INFINITY ? INTERVALS.ONETIME : planInterval
   const price = plan?.prices.find(
     (price) => price.interval === planInterval && price.currency === currency,
   )
@@ -114,6 +115,7 @@ export async function createSubscriptionCheckout({
   const checkout = await stripe.checkout.sessions.create({
     customer: user.customerId,
     line_items: [{ price: price.id, quantity: 1 }],
+    // mode: planId !== PLANS.INFINITY ? 'subscription' : 'payment',
     mode: 'subscription',
     payment_method_types: ['card'],
     success_url: `${HOST_URL}/dashboard/checkout`,

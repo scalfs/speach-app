@@ -1,5 +1,3 @@
-import { AVAILABLE_VOICES } from './voices'
-
 export async function getVoices() {
   const apiKey = process.env.EL_API_KEY
   const response = await fetch('https://api.elevenlabs.io/v1/voices', {
@@ -11,8 +9,11 @@ export async function getVoices() {
   return voicesToDisplay.reverse()
 }
 
+// const getPreSelectedVoices = (voices: Voice[]) =>
+//   voices.filter(({ voice_id }) => AVAILABLE_VOICES.includes(voice_id))
+
 const getPreSelectedVoices = (voices: Voice[]) =>
-  voices.filter(({ voice_id }) => AVAILABLE_VOICES.includes(voice_id))
+  voices.filter(({ category }) => category === 'cloned')
 
 export interface SpeachVoice {
   id: string
