@@ -136,6 +136,7 @@ export default function DashboardBilling() {
                     <span className="text-base font-medium text-foreground">
                       {plan.name}
                     </span>
+                    {/* {plan.id !== PLANS.FREE && plan.id !== PLANS.INFINITY && ( */}
                     {plan.id !== PLANS.FREE && (
                       <span className="flex items-center rounded-md bg-primary/10 px-1.5 text-sm font-medium text-foreground/80">
                         {currency === CURRENCIES.BRL ? 'R$' : '$'}{' '}
@@ -145,6 +146,12 @@ export default function DashboardBilling() {
                         / {selectedPlanInterval === INTERVALS.MONTH ? 'mês' : 'ano'}
                       </span>
                     )}
+                    {/* {plan.id === PLANS.INFINITY && (
+                      <span className="flex items-center rounded-md bg-primary/10 px-1.5 text-sm font-medium text-foreground/80">
+                        {currency === CURRENCIES.BRL ? 'R$' : '$'}{' '}
+                        {plan.prices[INTERVALS.ONETIME][currency] / 100}
+                      </span>
+                    )} */}
                   </div>
                   <p className="text-start text-sm font-normal text-foreground/60">
                     {plan.description}
@@ -152,6 +159,7 @@ export default function DashboardBilling() {
                 </div>
 
                 {/* Billing Switch */}
+                {/* {plan.id !== PLANS.FREE && plan.id !== PLANS.INFINITY && ( */}
                 {plan.id !== PLANS.FREE && (
                   <div className="items-center gap-2 px-4 sm:flex">
                     <label
@@ -184,22 +192,28 @@ export default function DashboardBilling() {
                     {subscription.planId.charAt(0).toUpperCase() +
                       subscription.planId.slice(1)}
                   </span>
-                  <p className="flex items-start gap-1 text-sm font-normal text-foreground/60">
-                    {subscription.cancelAtPeriodEnd === true ? (
-                      <span className="flex h-[18px] items-center text-sm font-medium text-red-500">
-                        Expira
-                      </span>
-                    ) : (
-                      <span className="flex h-[18px] items-center text-sm font-medium text-green-500">
-                        Renova
-                      </span>
-                    )}
-                    em:{' '}
-                    {new Date(subscription.currentPeriodEnd * 1000).toLocaleDateString(
-                      'pt-BR',
-                    )}
-                    .
-                  </p>
+                  {subscription.currentPeriodEnd ? (
+                    <p className="flex items-start gap-1 text-sm font-normal text-foreground/60">
+                      {subscription.cancelAtPeriodEnd === true ? (
+                        <span className="flex h-[18px] items-center text-sm font-medium text-red-500">
+                          Expira
+                        </span>
+                      ) : (
+                        <span className="flex h-[18px] items-center text-sm font-medium text-green-500">
+                          Renova
+                        </span>
+                      )}
+                      em:{' '}
+                      {new Date(subscription.currentPeriodEnd * 1000).toLocaleDateString(
+                        'pt-BR',
+                      )}
+                      .
+                    </p>
+                  ) : (
+                    <p className="flex items-start gap-1 text-sm font-normal text-foreground/60">
+                      Plano Vitalício
+                    </p>
+                  )}
                 </div>
                 <p className="text-start text-sm font-normal text-foreground/60">
                   {PRICING_PLANS[subscription.planId as Plan]?.description ?? ''}
