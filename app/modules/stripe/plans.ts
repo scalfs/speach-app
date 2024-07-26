@@ -53,7 +53,7 @@ export const FREE_CUSTOM_VOICES_QUOTA = 0
 export const PRICING_PLANS = {
   [PLANS.FREE]: {
     id: PLANS.FREE,
-    name: 'Gratuito',
+    name: 'Free',
     // description: 'Start with the basics, upgrade anytime.',
     description:
       'O básico para conhecer nosso sistema. Faça o upgrade a qualquer momento.',
