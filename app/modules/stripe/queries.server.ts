@@ -117,6 +117,7 @@ export async function createSubscriptionCheckout({
     line_items: [{ price: price.id, quantity: 1 }],
     // mode: planId !== PLANS.INFINITY ? 'subscription' : 'payment',
     mode: 'subscription',
+    allow_promotion_codes: true,
     payment_method_types: ['card'],
     success_url: `${HOST_URL}/dashboard/checkout`,
     cancel_url: `${HOST_URL}/dashboard/settings/billing`,
