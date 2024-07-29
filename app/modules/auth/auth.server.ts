@@ -10,6 +10,7 @@ import { HOST_URL } from '#app/utils/misc.server'
 import { ERRORS } from '#app/utils/constants/errors'
 import { ROUTE_PATH as LOGOUT_PATH } from '#app/routes/auth+/logout'
 import { ROUTE_PATH as MAGIC_LINK_PATH } from '#app/routes/auth+/magic-link'
+import { GoogleStrategy, SocialsProvider } from 'remix-auth-socials'
 
 export const authenticator = new Authenticator<User>(authSessionStorage)
 
@@ -70,6 +71,48 @@ authenticator.use(
     },
   ),
 )
+
+/**
+ * Google - Strategy
+ */
+
+authenticator.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID || '',
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+  scope: ["openid email profile"],
+  callbackURL: `http://localhost:3000/auth/${SocialsProvider.GOOGLE}/callback`
+},
+  async ({ profile }) => {
+    const email = profile._json.email || profile.emails[0].value
+    let user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        image: { select: { id: true } },
+        roles: { select: { name: true } },
+      },
+    })
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          roles: { connect: [{ name: 'user' }] },
+          email,
+        },
+        include: {
+          image: { select: { id: true } },
+          roles: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      })
+      if (!user) throw new Error(ERRORS.AUTH_USER_NOT_CREATED)
+    }
+
+    return user
+  },
+))
 
 /**
  * Github - Strategy.

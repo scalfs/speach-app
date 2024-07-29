@@ -23,6 +23,7 @@ import { Input } from '#app/components/ui/input'
 import { Button } from '#app/components/ui/button'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
 import { ROUTE_PATH as AUTH_VERIFY_PATH } from '#app/routes/auth+/verify'
+import { SocialsProvider } from 'remix-auth-socials'
 
 export const ROUTE_PATH = '/auth/login' as const
 
@@ -83,7 +84,7 @@ export default function Login() {
   }, [isHydrated])
 
   return (
-    <div className="mx-auto flex h-full w-full flex-col items-center justify-center gap-6 max-w-96">
+    <div className="mx-auto flex h-full w-full max-w-96 flex-col items-center justify-center gap-6">
       <div className="mb-2 flex flex-col gap-2">
         <h3 className="text-center text-2xl font-medium text-foreground">
           Vamos começar
@@ -131,6 +132,16 @@ export default function Login() {
 
         <Button type="submit" className="w-full">
           {isPending ? <Loader2 className="animate-spin" /> : 'Continuar com Email'}
+        </Button>
+      </Form>
+
+      <Form
+        method="post"
+        action={`/auth/${SocialsProvider.GOOGLE}`}
+        className="flex w-full flex-col items-center gap-1"
+      >
+        <Button type='submit' className='w-full'>
+          Login with Google
         </Button>
       </Form>
 
