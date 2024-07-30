@@ -80,7 +80,7 @@ authenticator.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID || '',
   clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
   scope: ["openid email profile"],
-  callbackURL: `http://localhost:3000/auth/${SocialsProvider.GOOGLE}/callback`
+  callbackURL: `${HOST_URL}/auth/${SocialsProvider.GOOGLE}/callback`
 },
   async ({ profile }) => {
     const email = profile._json.email || profile.emails[0].value
