@@ -1,19 +1,26 @@
-export async function getVoices() {
+import { AVAILABLE_VOICES, PERSONAL_VOICES } from './voices'
+
+export async function getVoices(userEmail: string) {
   const apiKey = process.env.EL_API_KEY
   const response = await fetch('https://api.elevenlabs.io/v1/voices', {
     headers: { Accept: 'application/json', 'xi-api-key': apiKey },
   })
   const { voices }: Response = await response.json()
-  const voicesToDisplay = getPreSelectedVoices(voices)
+  const personalVoices = getPersonalVoices(voices, userEmail)
 
-  return voicesToDisplay.reverse()
+  const globalVoices = getPreSelectedVoices(voices)
+
+  return [...personalVoices, ...globalVoices.reverse()]
 }
 
-// const getPreSelectedVoices = (voices: Voice[]) =>
-//   voices.filter(({ voice_id }) => AVAILABLE_VOICES.includes(voice_id))
-
 const getPreSelectedVoices = (voices: Voice[]) =>
-  voices.filter(({ category }) => category === 'cloned')
+  voices.filter(({ voice_id }) => AVAILABLE_VOICES.includes(voice_id))
+
+const getPersonalVoices = (voices: Voice[], userEmail: string) => {
+  if (userEmail in PERSONAL_VOICES)
+    return voices.filter(({ voice_id }) => PERSONAL_VOICES[userEmail].includes(voice_id))
+  return []
+}
 
 export interface SpeachVoice {
   id: string
