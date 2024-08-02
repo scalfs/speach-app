@@ -42,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const availableCredits = subscription?.availableCredits ?? FREE_CHARS_QUOTA
   const charactersPerMonth = subscription?.plan.charactersPerMonth ?? FREE_CHARS_QUOTA
 
-  const voices = await getVoices()
+  const voices = await getVoices(user.email)
   const modelId = await getModelId({ sts: true })
 
   const speachVoices = voices.map(({ name, voice_id }) => ({

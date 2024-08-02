@@ -53,7 +53,7 @@ export const FREE_CUSTOM_VOICES_QUOTA = 0
 export const PRICING_PLANS = {
   [PLANS.FREE]: {
     id: PLANS.FREE,
-    name: 'Gratuito',
+    name: 'Free',
     // description: 'Start with the basics, upgrade anytime.',
     description:
       'O básico para conhecer nosso sistema. Faça o upgrade a qualquer momento.',
@@ -74,8 +74,8 @@ export const PRICING_PLANS = {
     customVoices: 2,
     charactersPerMonth: 25000,
     prices: {
-      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 2000, [CURRENCIES.BRL]: 9000 },
-      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 20000, [CURRENCIES.BRL]: 90000 },
+      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 1900, [CURRENCIES.BRL]: 8900 },
+      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 19000, [CURRENCIES.BRL]: 89000 },
     },
   },
   [PLANS.STARTER]: {
@@ -87,8 +87,8 @@ export const PRICING_PLANS = {
     customVoices: 5,
     charactersPerMonth: 50000,
     prices: {
-      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 5000, [CURRENCIES.BRL]: 15000 },
-      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 50000, [CURRENCIES.BRL]: 150000 },
+      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 4900, [CURRENCIES.BRL]: 14900 },
+      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 49000, [CURRENCIES.BRL]: 149000 },
     },
   },
   [PLANS.ROCKET]: {
@@ -100,8 +100,8 @@ export const PRICING_PLANS = {
     customVoices: 10,
     charactersPerMonth: 100000,
     prices: {
-      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 7500, [CURRENCIES.BRL]: 25000 },
-      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 75000, [CURRENCIES.BRL]: 250000 },
+      [INTERVALS.MONTH]: { [CURRENCIES.USD]: 7490, [CURRENCIES.BRL]: 24900 },
+      [INTERVALS.YEAR]: { [CURRENCIES.USD]: 74900, [CURRENCIES.BRL]: 249000 },
     },
   },
   // [PLANS.INFINITY]: {
