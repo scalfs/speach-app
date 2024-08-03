@@ -81,7 +81,6 @@ authenticator.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-      scope: ['openid email profile'],
       callbackURL: `${HOST_URL}/auth/${SocialsProvider.GOOGLE}/callback`,
     },
     async ({ profile }) => {

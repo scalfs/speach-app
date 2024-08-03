@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import { flatRoutes } from 'remix-flat-routes'
 import { remixDevTools } from 'remix-development-tools'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import svgr from "vite-plugin-svgr"
 
 export default defineConfig({
   build: {
@@ -10,6 +11,7 @@ export default defineConfig({
   },
   plugins: [
     remixDevTools(),
+    svgr(),
     remix({
       serverModuleFormat: 'esm',
       ignoredRouteFiles: ['**/.*'],

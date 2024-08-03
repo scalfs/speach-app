@@ -20,21 +20,21 @@
 
 // This must be used when the EL_API_KEY from speach01@pontocomaudio.net is active
 export const AVAILABLE_VOICES = [
-  'sA08OlI57z554552XXjX',
-  's1jU0O6YsnX1rolenQ2A',
-  'o3RJix088ugyZcwwYM3N',
-  'dzwZCZVXlnr9CsVCIDsz',
-  'XfKngIgwgvmeM3CPDKZm',
-  'WxzWnZq1LFVJBtbkvxuS',
-  'VYjSVzm8dqAhsudH9epS',
-  'SlOJVCxFKpxIw2B2UyRv',
-  'LsVvY9nciBQgPDgtIDCN',
-  'KdaOahi28ASmMR2OV0np',
-  'BXuxFdLk9EZEGNyspghL',
-  'AUT94XCm70ITqw7T2XEB',
-  '78kCnUrLe93dge5r4WLz',
-  '70v6Tw9xxKlAxwX6exJX',
-  '3M0mGfcPpXDcCvaGMB09',
+  'GEAOOSvHHcqfphelQWrc',
+  'HLqJ0A0lvE7wQKabLTqf',
+  'MRN0BwIfP7DMNzXRUvtn',
+  '99jlxGHWKu178be7axXQ',
+  'L4eFA4NZRZXOOBXQfena',
+  'WtKRL8Y8Bh4oqaRLowky',
+  'GxGTGX8HJYUj0OxfOpiC',
+  'ibL9zzF9gQFzuauNevpB',
+  'Gw64dPxOgEIUn9ZPgPK9',
+  'qPMn31xkY1PQayr5n5N1',
+  '6yb1kH65UbAHssTo7e0z',
+  'tnhVCnroNZuLZa8PMbdS',
+  'vnbpfDufGMDPGeF7Xy88',
+  'uqhlwkQJuX6NA1Vox5KN',
+  'e3E7F7MSXzL91fyczk2S',
 ]
 
 export const PERSONAL_VOICES = {
