@@ -76,43 +76,46 @@ authenticator.use(
  * Google - Strategy
  */
 
-authenticator.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID || '',
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-  scope: ["openid email profile"],
-  callbackURL: `${HOST_URL}/auth/${SocialsProvider.GOOGLE}/callback`
-},
-  async ({ profile }) => {
-    const email = profile._json.email || profile.emails[0].value
-    let user = await prisma.user.findUnique({
-      where: { email },
-      include: {
-        image: { select: { id: true } },
-        roles: { select: { name: true } },
-      },
-    })
-
-    if (!user) {
-      user = await prisma.user.create({
-        data: {
-          roles: { connect: [{ name: 'user' }] },
-          email,
-        },
+authenticator.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      scope: ['openid email profile'],
+      callbackURL: `${HOST_URL}/auth/${SocialsProvider.GOOGLE}/callback`,
+    },
+    async ({ profile }) => {
+      const email = profile._json.email || profile.emails[0].value
+      let user = await prisma.user.findUnique({
+        where: { email },
         include: {
           image: { select: { id: true } },
-          roles: {
-            select: {
-              name: true,
-            },
-          },
+          roles: { select: { name: true } },
         },
       })
-      if (!user) throw new Error(ERRORS.AUTH_USER_NOT_CREATED)
-    }
 
-    return user
-  },
-))
+      if (!user) {
+        user = await prisma.user.create({
+          data: {
+            roles: { connect: [{ name: 'user' }] },
+            email,
+          },
+          include: {
+            image: { select: { id: true } },
+            roles: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        })
+        if (!user) throw new Error(ERRORS.AUTH_USER_NOT_CREATED)
+      }
+
+      return user
+    },
+  ),
+)
 
 /**
  * Github - Strategy.
