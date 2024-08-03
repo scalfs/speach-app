@@ -47,16 +47,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const voices = await getVoices(user.email)
   const modelId = await getModelId({})
 
-  const speachVoices = voices.map(({ name, voice_id }) => ({ name, id: voice_id }))
-
   // weird name to obfuscate the return
   const data = process.env.EL_API_KEY
   return json({
     data,
+    voices,
     modelId,
     availableCredits,
     charactersPerMonth,
-    voices: speachVoices,
   } as const)
   // return json({ user, data, subscription } as const)
 }
@@ -118,7 +116,7 @@ export default function DashboardIndex() {
   const [isCreating, setIsCreating] = useState(false)
 
   const {
-    voices = [],
+    voices,
     modelId = '',
     data: EL_API_KEY = '',
     availableCredits,
@@ -259,7 +257,7 @@ export default function DashboardIndex() {
                 <label className="font-mono text-xs font-medium text-gray-400">
                   {textLenght}/{maxTextLengh}
                 </label>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 text-right">
                   <label className="font-mono text-xs font-medium text-gray-400">
                     Créditos disponíveis: {availableCredits}/{charactersPerMonth}
                   </label>

@@ -6,11 +6,11 @@ export async function getVoices(userEmail: string) {
     headers: { Accept: 'application/json', 'xi-api-key': apiKey },
   })
   const { voices }: Response = await response.json()
-  const personalVoices = getPersonalVoices(voices, userEmail)
 
-  const globalVoices = getPreSelectedVoices(voices)
+  const personalVoices = parseSpeachVoices(getPersonalVoices(voices, userEmail))
+  const sharedVoices = parseSpeachVoices(getPreSelectedVoices(voices))
 
-  return [...personalVoices, ...globalVoices.reverse()]
+  return { personalVoices, sharedVoices }
 }
 
 const getPreSelectedVoices = (voices: Voice[]) =>
@@ -20,6 +20,15 @@ const getPersonalVoices = (voices: Voice[], userEmail: string) => {
   if (userEmail in PERSONAL_VOICES)
     return voices.filter(({ voice_id }) => PERSONAL_VOICES[userEmail].includes(voice_id))
   return []
+}
+
+const parseSpeachVoices = (voices: Voice[]): SpeachVoice[] => {
+  return voices.map(({ name, voice_id }) => ({ name, id: voice_id }))
+}
+
+export interface SpeachVoices {
+  personalVoices: SpeachVoice[]
+  sharedVoices: SpeachVoice[]
 }
 
 export interface SpeachVoice {

@@ -12,11 +12,11 @@ import {
 } from '#app/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '#app/components/ui/popover'
 
-import { type SpeachVoice } from '#app/modules/eleven-labs/voices.server.js'
+import type { SpeachVoice, SpeachVoices } from '#app/modules/eleven-labs/voices.server.js'
 import { cn } from '#app/utils/misc.js'
 
 interface Props {
-  voices: SpeachVoice[]
+  voices: SpeachVoices
   selectedVoice: SpeachVoice | null
   onSelectVoice: (voice: SpeachVoice | null) => void
 }
@@ -42,7 +42,7 @@ export function VoicesCombobox({ voices, selectedVoice, onSelectVoice }: Props) 
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[300px] justify-between text-wrap text-left">
+          className="w-full max-w-[300px] justify-between text-wrap text-left">
           {selectedVoice?.name ?? 'Escolha...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -52,25 +52,36 @@ export function VoicesCombobox({ voices, selectedVoice, onSelectVoice }: Props) 
           <CommandList className="max-h-[300px]">
             <CommandInput placeholder="Pesquisar voz..." />
             <CommandEmpty>Voz não encontrada.</CommandEmpty>
-            <CommandGroup>
-              {voices.map((voice) => (
-                <CommandItem
-                  key={voice.id}
-                  value={voice.name}
-                  onSelect={(...args) => onSelect(...args, voice)}>
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      isSelected(voice) ? 'opacity-100' : 'opacity-0',
-                    )}
-                  />
-                  {voice.name}
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            {Object.entries(voices).map(([group, voices], index) => {
+              if (!voices.length) return null
+              return (
+                <CommandGroup heading={getHeadingLabel(group)} key={index}>
+                  {voices.map((voice: SpeachVoice) => (
+                    <CommandItem
+                      key={voice.id}
+                      value={voice.name}
+                      onSelect={(...args) => onSelect(...args, voice)}>
+                      <Check
+                        className={cn(
+                          'mr-2 h-4 w-4',
+                          isSelected(voice) ? 'opacity-100' : 'opacity-0',
+                        )}
+                      />
+                      {voice.name}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )
+            })}
           </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
   )
+}
+
+const getHeadingLabel = (voiceGroup: keyof SpeachVoices | string) => {
+  if (voiceGroup === 'personalVoices') return 'Vozes customizadas'
+  if (voiceGroup === 'sharedVoices') return 'Vozes profissionais'
+  return ''
 }
