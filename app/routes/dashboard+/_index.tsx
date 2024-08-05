@@ -26,7 +26,7 @@ import {
   useLoaderData,
   type ShouldRevalidateFunction,
 } from '@remix-run/react'
-import { Loader2 } from 'lucide-react'
+import { Loader2, PlayCircle } from 'lucide-react'
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import invariant from 'tiny-invariant'
@@ -217,6 +217,16 @@ export default function DashboardIndex() {
     // loading.value = false;
   }
 
+  const playVoicePreview = (slug: string) => {
+    const url = `https://speach-voice-demos.s3.sa-east-1.amazonaws.com/${slug}.mp3`
+    try {
+      const audio = new Audio(url)
+      audio.play()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <div className="mb-32 flex h-full w-full bg-secondary px-6 py-8 dark:bg-black">
       <div className="z-10 mx-auto flex h-full w-full max-w-screen-xl gap-12">
@@ -229,6 +239,15 @@ export default function DashboardIndex() {
                   Escolha uma das vozes, digite o texto e produza seu áudio.
                 </p>
                 <VoicesCombobox {...{ voices, selectedVoice, onSelectVoice }} />
+                <Button
+                  type="button"
+                  variant="secondary"
+                  disabled={!selectedVoice || !selectedVoice.slug}
+                  onClick={() => playVoicePreview(selectedVoice?.slug || '')}
+                  className="max-w-[300px]">
+                  <PlayCircle className="mr-2 h-4 w-4" />
+                  Ouvir preview
+                </Button>
                 {errors?.voiceId ? (
                   <em className="text-sm text-red-600">{errors.voiceId}</em>
                 ) : null}
