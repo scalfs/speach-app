@@ -1,4 +1,4 @@
-import { AVAILABLE_VOICES, PERSONAL_VOICES } from './voices'
+import { AVAILABLE_VOICES, type ListVoices, PERSONAL_VOICES } from './voices'
 
 export async function getVoices(userEmail: string) {
   const apiKey = process.env.EL_API_KEY
@@ -8,22 +8,30 @@ export async function getVoices(userEmail: string) {
   const { voices }: Response = await response.json()
 
   const personalVoices = parseSpeachVoices(getPersonalVoices(voices, userEmail))
-  const sharedVoices = parseSpeachVoices(getPreSelectedVoices(voices))
+  const sharedVoices = parseSpeachVoices(getListVoices(voices, AVAILABLE_VOICES))
 
   return { personalVoices, sharedVoices }
 }
 
-const getPreSelectedVoices = (voices: Voice[]) =>
-  voices.filter(({ voice_id }) => AVAILABLE_VOICES.includes(voice_id))
+const getListVoices = (elVoices: Voice[], listVoices: ListVoices) => {
+  return listVoices.reduce(
+    (voices, { id, slug }) => {
+      const elVoice = elVoices.find(({ voice_id }) => id === voice_id)
+      if (!elVoice) return voices
+      return [...voices, { ...elVoice, slug }]
+    },
+    [] as (Voice & { slug: string })[],
+  )
+}
 
 const getPersonalVoices = (voices: Voice[], userEmail: string) => {
   if (userEmail in PERSONAL_VOICES)
-    return voices.filter(({ voice_id }) => PERSONAL_VOICES[userEmail].includes(voice_id))
+    return getListVoices(voices, PERSONAL_VOICES[userEmail])
   return []
 }
 
-const parseSpeachVoices = (voices: Voice[]): SpeachVoice[] => {
-  return voices.map(({ name, voice_id }) => ({ name, id: voice_id }))
+const parseSpeachVoices = (voices: (Voice & { slug: string })[]): SpeachVoice[] => {
+  return voices.map(({ name, voice_id, slug }) => ({ name, id: voice_id, slug }))
 }
 
 export interface SpeachVoices {
@@ -34,6 +42,7 @@ export interface SpeachVoices {
 export interface SpeachVoice {
   id: string
   name: string
+  slug: string
 }
 
 interface Response {
