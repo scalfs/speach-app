@@ -24,11 +24,11 @@ interface Props {
 export function VoicesCombobox({ voices, selectedVoice, onSelectVoice }: Props) {
   const [open, setOpen] = useState(false)
 
-  const onSelect = (currentValue: string, voice: SpeachVoice) => {
+  const onSelect = (currentValue: string, { id, name, slug }: SpeachVoice) => {
     if (selectedVoice && currentValue === selectedVoice.name) {
       onSelectVoice(null)
     } else {
-      onSelectVoice({ id: voice.id, name: voice.name })
+      onSelectVoice({ id, name, slug })
     }
     setOpen(false)
   }
