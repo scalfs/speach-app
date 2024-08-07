@@ -23,6 +23,8 @@ import { Input } from '#app/components/ui/input'
 import { Button } from '#app/components/ui/button'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
 import { ROUTE_PATH as AUTH_VERIFY_PATH } from '#app/routes/auth+/verify'
+import { SocialsProvider } from 'remix-auth-socials'
+import GoogleLogo from "#app/assets/google-logo.svg?react" 
 
 export const ROUTE_PATH = '/auth/login' as const
 
@@ -83,7 +85,7 @@ export default function Login() {
   }, [isHydrated])
 
   return (
-    <div className="mx-auto flex h-full w-full flex-col items-center justify-center gap-6 max-w-96">
+    <div className="mx-auto flex h-full w-full max-w-96 flex-col items-center justify-center gap-6">
       <div className="mb-2 flex flex-col gap-2">
         <h3 className="text-center text-2xl font-medium text-foreground">
           Vamos começar
@@ -134,13 +136,21 @@ export default function Login() {
         </Button>
       </Form>
 
-      {/* <div className="relative flex w-full items-center justify-center">
+      <div className="relative flex w-full items-center justify-center">
         <span className="absolute w-full border-b border-border" />
         <span className="z-10 bg-card px-2 text-xs font-medium uppercase text-foreground/60">
           Ou continue com
         </span>
       </div>
 
+      <Form method="post" action={`/auth/${SocialsProvider.GOOGLE}`} className="w-full">
+        <Button variant="outline" className="w-full gap-2 bg-transparent">
+          <GoogleLogo />
+          Google
+        </Button>
+      </Form>
+
+      {/*
       <Form action={`/auth/github`} method="POST" className="w-full">
         <Button variant="outline" className="w-full gap-2 bg-transparent">
           <svg

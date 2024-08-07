@@ -28,11 +28,12 @@ export default function Layout() {
   return (
     <div className="w-fullw b flex h-screen bg-black">
       <div className="absolute left-1/2 top-10 mx-auto flex -translate-x-1/2 transform lg:hidden">
-        <Link
-          to={HOME_PATH}
-          prefetch="intent"
-          className="z-10">
-          <img src={theme === 'dark' ? LogoWhite: LogoColor } alt="logo" className="h-24 w-auto" />
+        <Link to={HOME_PATH} prefetch="intent" className="z-10">
+          <img
+            src={theme === 'dark' ? LogoWhite : LogoColor}
+            alt="logo"
+            className="h-24 w-auto"
+          />
         </Link>
       </div>
 
@@ -44,7 +45,7 @@ export default function Layout() {
           <img src={LogoWhite} alt="logo" className="h-32 w-auto" />
         </Link>
 
-        <h2 className="text-white text-4xl font-thin max-w-[12rem] pt-24 pb-56">
+        <h2 className="max-w-[12rem] pb-56 pt-24 text-4xl font-thin text-white">
           Você agora <br />
           faz parte <br />
           do futuro da <br />
@@ -52,7 +53,7 @@ export default function Layout() {
         </h2>
       </div>
 
-      <div className="flex h-full w-full flex-col border-l border-primary/5 bg-card lg:w-[50%] p-8">
+      <div className="flex h-full w-full flex-col border-l border-primary/5 bg-card p-8 lg:w-[50%]">
         <Outlet />
       </div>
     </div>

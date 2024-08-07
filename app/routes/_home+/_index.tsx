@@ -17,7 +17,7 @@ export const meta: MetaFunction = () => {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  // redirecting for now. Our landing page is in another domain. 
+  // redirecting for now. Our landing page is in another domain.
   // Sending users straight to login or dashboard.
   return redirect(LOGIN_PATH)
 

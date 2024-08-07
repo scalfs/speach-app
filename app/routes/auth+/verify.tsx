@@ -81,7 +81,7 @@ export default function Verify() {
   }, [isHydrated])
 
   return (
-    <div className="mx-auto flex h-full w-full flex-col items-center justify-center gap-6 max-w-96">
+    <div className="mx-auto flex h-full w-full max-w-96 flex-col items-center justify-center gap-6">
       <div className="mb-2 flex flex-col gap-2">
         <p className="text-center text-2xl text-foreground">Verifique seu inbox!</p>
         <p className="text-center text-base font-normal text-foreground/60">
